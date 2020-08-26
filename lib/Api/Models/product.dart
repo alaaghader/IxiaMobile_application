@@ -1,0 +1,31 @@
+import 'package:ixiamobile_application/Api/Models/category.dart';
+import 'package:ixiamobile_application/Api/Models/company.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'product.g.dart';
+
+@JsonSerializable()
+class Product{
+  int id;
+  Category categoryId;
+  Company companyId;
+  String name;
+  double price;
+  String imageUrl;
+  String description;
+
+  Product({
+    this.id,
+    this.categoryId,
+    this.companyId,
+    this.name,
+    this.price,
+    this.imageUrl,
+    this.description
+  });
+
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
+}
