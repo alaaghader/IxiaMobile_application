@@ -16,8 +16,8 @@ Test _$TestFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TestToJson(Test instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'phoneNumber': instance.phoneNumber,
-      'email': instance.email,
-    };
+  'id': instance.id,
+  'name': instance.name,
+  'phoneNumber': instance.phoneNumber,
+  'email': instance.email,
+};

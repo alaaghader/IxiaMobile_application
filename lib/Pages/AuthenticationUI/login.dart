@@ -37,6 +37,18 @@ class _LoginState extends State<Login>{
        child: Column(
          mainAxisAlignment: MainAxisAlignment.end,
          children: [
+           Container(
+             alignment: Alignment.topCenter,
+             margin: EdgeInsets.only(bottom: 200),
+             child: Text(
+               'WELCOME TO \n    IXIA APP!',
+               style: TextStyle(
+                 fontSize: 40,
+                 fontWeight: FontWeight.bold,
+                 color: Colors.redAccent
+               ),
+             ),
+           ),
            Card(
              elevation: 5,
              shape: RoundedRectangleBorder(
@@ -106,7 +118,6 @@ class _LoginState extends State<Login>{
          ],
        ),
      ),
-     backgroundColor: Colors.blueGrey[200],
    );
  }
 }

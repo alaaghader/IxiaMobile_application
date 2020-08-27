@@ -7,8 +7,8 @@ part 'product.g.dart';
 @JsonSerializable()
 class Product{
   int id;
-  Category categoryId;
-  Company companyId;
+  Category category;
+  Company company;
   String name;
   double price;
   String imageUrl;
@@ -16,8 +16,8 @@ class Product{
 
   Product({
     this.id,
-    this.categoryId,
-    this.companyId,
+    this.category,
+    this.company,
     this.name,
     this.price,
     this.imageUrl,
