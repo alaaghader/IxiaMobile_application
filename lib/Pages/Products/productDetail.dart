@@ -54,35 +54,18 @@ class ProductDetailsState extends State<ProductDetails>{
                         child: Stack(
                           children: <Widget>[
                             Positioned(
-                              top: 40.0,
-                              right: 5.0,
-                              child: Container(
-                                width: 40.0,
-                                height: 40.0,
-                                child: Text(
-                                  '58',
-                                  style: TextStyle(
-                                    color: Color(0xFFFFFFFF),
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: "Montserrat",
-                                    fontSize: 18.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: 18.0,
-                              right: -25.0,
+                              top: 25.0,
+                              right: -40.0,
                               child: Container(
                                 width: 160.0,
                                 height: 40.0,
                                 child: Text(
-                                  '\$ 59.',
+                                  '\$ 59.53',
                                   style: TextStyle(
                                     color: Color(0xFFFFFFFF),
                                     fontWeight: FontWeight.w400,
                                     fontFamily: "Montserrat",
-                                    fontSize: 41.0,
+                                    fontSize: 25.0,
                                   ),
                                 ),
                               ),

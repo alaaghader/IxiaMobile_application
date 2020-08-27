@@ -48,7 +48,7 @@ class Products extends StatelessWidget {
                               child: Container(
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('res/images/hoodie.jpg'),
+                                    image: AssetImage('res/images/myHoodie.png'),
                                     fit: BoxFit.fill,
                                   ),
                                   borderRadius: BorderRadius.circular(15.0),
