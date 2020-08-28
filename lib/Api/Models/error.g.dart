@@ -15,7 +15,7 @@ Error _$ErrorFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ErrorToJson(Error instance) => <String, dynamic>{
-  'code': instance.code,
-  'description': instance.description,
-  'path': instance.path,
-};
+      'code': instance.code,
+      'description': instance.description,
+      'path': instance.path,
+    };

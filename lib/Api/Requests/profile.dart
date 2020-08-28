@@ -5,8 +5,8 @@ import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/utils/dio.dart';
 
 class ProfileApi{
-  Future<User> getUserAsync(
-    String id
+  static Future<User> getUserAsync(
+    [String id]
       ) async {
     try{
         var response = await dio.get('api/profile/GetUser/{$id}');
@@ -23,7 +23,7 @@ class ProfileApi{
     }
   }
 
-  Future<bool> updateProfileAsync(
+  static Future<User> updateProfileAsync(
     String id,
     String firstName,
     String middleName,
@@ -47,7 +47,7 @@ class ProfileApi{
         throw StatusFailure.fromResponse(response);
       }
 
-      return response.data['payload'];    
+        return User.fromJson(response.data["payload"]);
     }  on DioError catch (error) {
       throw InternetFailure(message: error.message);
     }

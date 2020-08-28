@@ -5,7 +5,7 @@ import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/utils/dio.dart';
 
 class AccountApi{
-  Future<TokenView> signUp(
+  static Future<TokenView> signUp(
     String firstName,
     String lastName,
     String userName,
@@ -33,7 +33,7 @@ class AccountApi{
     }
   }
 
-  Future<TokenView> login(
+  static Future<TokenView> login(
     String email,
     String password
       ) async {

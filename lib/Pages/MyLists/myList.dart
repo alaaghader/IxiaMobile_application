@@ -82,7 +82,7 @@ class MyListState extends State<MyList>{
                                   ),
                                   SizedBox(height: 8.0),
                                   Text(
-                                    e.company.name.toString() ?? "",
+                                    e.company.toString() ?? "",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontWeight: FontWeight.bold),
                                   ),

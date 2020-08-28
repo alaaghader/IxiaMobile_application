@@ -9,12 +9,12 @@ part of 'product.dart';
 Product _$ProductFromJson(Map<String, dynamic> json) {
   return Product(
     id: json['id'] as int,
-    category: json['categoryId'] == null
+    category: json['category'] == null
         ? null
-        : Category.fromJson(json['categoryId'] as Map<String, dynamic>),
-    company: json['companyId'] == null
+        : Category.fromJson(json['category'] as Map<String, dynamic>),
+    company: json['company'] == null
         ? null
-        : Company.fromJson(json['companyId'] as Map<String, dynamic>),
+        : Company.fromJson(json['company'] as Map<String, dynamic>),
     name: json['name'] as String,
     price: (json['price'] as num)?.toDouble(),
     imageUrl: json['imageUrl'] as String,
@@ -23,11 +23,11 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
-  'id': instance.id,
-  'categoryId': instance.category,
-  'companyId': instance.company,
-  'name': instance.name,
-  'price': instance.price,
-  'imageUrl': instance.imageUrl,
-  'description': instance.description,
-};
+      'id': instance.id,
+      'category': instance.category,
+      'company': instance.company,
+      'name': instance.name,
+      'price': instance.price,
+      'imageUrl': instance.imageUrl,
+      'description': instance.description,
+    };
