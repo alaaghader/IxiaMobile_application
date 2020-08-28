@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Components/separator_list_item.dart';
 
+import 'editAccount.dart';
+
 class Account extends StatelessWidget {
   Widget _buildSettingsList(BuildContext context) {
     return Column(
@@ -17,6 +19,12 @@ class Account extends StatelessWidget {
             subtitle: Text('Profile, privacy options'),
             trailing: Icon(Icons.navigate_next),
             onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditAccount(),
+                ),
+              );
             },
           ),
         ),
