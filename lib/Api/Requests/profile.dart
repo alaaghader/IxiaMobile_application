@@ -5,11 +5,9 @@ import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/utils/dio.dart';
 
 class ProfileApi{
-  static Future<User> getUserAsync(
-    [String id]
-      ) async {
+  static Future<User> getUserAsync([String id]) async {
     try{
-        var response = await dio.get('api/profile/GetUser/{$id}');
+        var response = await dio.get('api/profile/${id ?? ''}');
         
         print(response);
 
