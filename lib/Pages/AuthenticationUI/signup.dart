@@ -5,7 +5,6 @@ import 'package:ixiamobile_application/Failures/internet_failure.dart';
 import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
-
 import '../start.dart';
 
 class SignUp extends StatefulWidget{
@@ -70,6 +69,7 @@ class SignUpState extends State<SignUp>{
       ),
     );
   }
+
   void _signUp() async {
     if (_formKey.currentState.validate()) {
       try {

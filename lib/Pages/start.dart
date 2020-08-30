@@ -1,10 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/user/Desktop/ixiamobile_application/lib/Pages/Account/account.dart';
-import 'file:///C:/Users/user/Desktop/ixiamobile_application/lib/Pages/MyLists/myList.dart';
-import 'file:///C:/Users/user/Desktop/ixiamobile_application/lib/Pages/Products/products.dart';
-import 'file:///C:/Users/user/Desktop/ixiamobile_application/lib/Pages/Search/search.dart';
+import 'package:ixiamobile_application/Pages/Account/account.dart';
+import 'MyLists/myList.dart';
+import 'Products/products.dart';
+import 'Search/search.dart';
 
 class StartPage extends StatefulWidget {
   static const String route = 'home';

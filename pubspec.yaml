@@ -31,6 +31,7 @@ dependencies:
   provider: ^4.3.2
   mobx: ^1.2.1
   flutter_mobx: ^1.1.0
+  flutter_facebook_login: ^1.2.0
   flutter:
     sdk: flutter
 
@@ -92,5 +93,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-module:
-  androidX: true

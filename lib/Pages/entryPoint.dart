@@ -7,6 +7,7 @@ import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
 
 import 'AuthenticationUI/signup.dart';
+import 'entryPage.dart';
 
 class EntryPoint extends StatefulWidget{
   EntryPoint({Key key}) : super(key: key);
@@ -92,103 +93,3 @@ class _EntryPointState extends State<EntryPoint>{
    );
  }
 }
-
-class EntryPage extends StatelessWidget {
-  const EntryPage({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              alignment: Alignment.topCenter,
-              margin: EdgeInsets.only(bottom: 200),
-              child: Text(
-                'WELCOME TO \n    IXIA APP!',
-                style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.redAccent
-                ),
-              ),
-            ),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0)
-              ),
-              color: Colors.blue,
-              child: ListTile(
-                leading: Icon(
-                  FontAwesomeIcons.facebook,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'Continue With Facebook',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0)
-              ),
-              color: Colors.red,
-              child: ListTile(
-                onTap: (){},
-                leading: Icon(
-                  FontAwesomeIcons.google,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'Continue With Google',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0)
-              ),
-              color: Colors.grey[500],
-              child: ListTile(
-                onTap: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SignUp(),
-                    ),
-                  );
-                },
-                leading: Icon(
-                  Icons.email,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'Continue With Email',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-

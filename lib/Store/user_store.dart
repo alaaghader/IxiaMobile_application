@@ -6,7 +6,6 @@ import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/utils/extensions.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 part 'user_store.g.dart';
 
 class UserStore extends _UserStore with _$UserStore {
@@ -58,6 +57,23 @@ abstract class _UserStore with Store {
         userName,
         email,
         password
+      );
+      var sharedPrefs = await SharedPreferences.getInstance();
+      sharedPrefs.setToken(tokenView);
+    } finally {
+      loading = false;
+    }
+    return tokenView;
+  }
+
+  @action
+  Future<TokenView> facebookLogin(
+      String email
+      ) async {
+    loading = true;
+    try {
+      tokenView = await AccountApi.facebookLogin(
+          email
       );
       var sharedPrefs = await SharedPreferences.getInstance();
       sharedPrefs.setToken(tokenView);
