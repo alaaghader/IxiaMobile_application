@@ -11,6 +11,7 @@ import 'package:ixiamobile_application/Pages/start.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
 import 'AuthenticationUI/signup.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class EntryPage extends StatefulWidget {
   @override
@@ -19,8 +20,10 @@ class EntryPage extends StatefulWidget {
 
 class EntryPageState extends State<EntryPage>{
   bool isLoggedIn = false;
+  bool _googleIsLoggedIn = false;
   Map userProfile;
   final fblogin = new FacebookLogin();
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   UserStore userStore;
 
   @override
@@ -70,6 +73,30 @@ class EntryPageState extends State<EntryPage>{
         builder: (context) => StartPage(),
       ),
     );
+  }
+
+  _googleLogin() async{
+    try{
+      await _googleSignIn.signIn();
+      setState(() {
+        _googleIsLoggedIn = true;
+      });
+      try {
+        await userStore.googleLogin(_googleSignIn.currentUser.displayName);
+        _goToEntryPoint();
+      } on Failure catch (failure) {
+        _showAlert(failure);
+      }
+    } catch (err){
+      print(err);
+    }
+  }
+
+  _googleLogout(){
+    _googleSignIn.signOut();
+    setState(() {
+      _googleIsLoggedIn = false;
+    });
   }
 
   _login() async {
@@ -164,7 +191,9 @@ class EntryPageState extends State<EntryPage>{
               ),
               color: Colors.red,
               child: ListTile(
-                onTap: (){},
+                onTap: (){
+                  _googleLogin();
+                },
                 leading: Icon(
                   FontAwesomeIcons.google,
                   color: Colors.white,

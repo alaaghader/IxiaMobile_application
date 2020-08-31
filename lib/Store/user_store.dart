@@ -84,6 +84,23 @@ abstract class _UserStore with Store {
   }
 
   @action
+  Future<TokenView> googleLogin(
+      String email
+      ) async {
+    loading = true;
+    try {
+      tokenView = await AccountApi.googleLogin(
+          email
+      );
+      var sharedPrefs = await SharedPreferences.getInstance();
+      sharedPrefs.setToken(tokenView);
+    } finally {
+      loading = false;
+    }
+    return tokenView;
+  }
+
+  @action
   Future<User> loadProfile() async {
     loading = true;
     try {

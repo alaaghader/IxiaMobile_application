@@ -74,4 +74,24 @@ class AccountApi{
       throw InternetFailure(message: error.message);
     }
   }
+
+  static Future<TokenView> googleLogin(
+      String email,
+      ) async {
+    try{
+      var response = await dio.post('api/account/googleLogin', data: {
+        "Email": email
+      });
+
+      print(response);
+
+      if (response.statusCode >= 400) {
+        throw StatusFailure.fromResponse(response);
+      }
+
+      return TokenView.fromJson(response.data["payload"]);
+    }  on DioError catch (error) {
+      throw InternetFailure(message: error.message);
+    }
+  }
 }
