@@ -54,18 +54,39 @@ class ProductApi{
   }
 
   Future<Product> getProductDetailsAsync(
-    int id
+      int id
       ) async {
     try{
-        var response = await dio.get('api/product/GetProductDetails/$id');
-        
-        print(response);
+      var response = await dio.get('api/product/GetProductDetails/$id');
+
+      print(response);
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
       }
 
       return Product.fromJson(response.data["payload"]);
+    }  on DioError catch (error) {
+      throw InternetFailure(message: error.message);
+    }
+  }
+
+  Future<List<Product>> searchProductsAsync(
+      String name
+      ) async {
+    try{
+      var response = await dio.post('api/product/SearchProduct',data: {
+        "Name":name,
+      });
+
+      print(response);
+
+      if (response.statusCode >= 400) {
+        throw StatusFailure.fromResponse(response);
+      }
+
+      Iterable mapList = response.data['payload'];
+      return mapList.map((e) => Product.fromJson(e)).toList();
     }  on DioError catch (error) {
       throw InternetFailure(message: error.message);
     }
