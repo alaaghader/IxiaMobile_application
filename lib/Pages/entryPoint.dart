@@ -44,16 +44,6 @@ class _EntryPointState extends State<EntryPoint>{
  @override
  Widget build(BuildContext context) {
    return Scaffold(
-     appBar: AppBar(
-       title: Text(
-           'Ixia',
-         style: TextStyle(
-           fontSize: 25,
-         ),
-       ),
-       centerTitle: true,
-       backgroundColor: Colors.red,
-     ),
      body:  SafeArea(
        child: FutureBuilder<void>(
          future: _future,
@@ -86,7 +76,7 @@ class _EntryPointState extends State<EntryPoint>{
                });
              }
            }
-           return CircularProgressIndicator();
+           return Center(child: CircularProgressIndicator());
          },
        ),
      ),

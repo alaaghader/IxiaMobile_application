@@ -10,6 +10,7 @@ import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/Pages/start.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
+import 'AuthenticationUI/signin.dart';
 import 'AuthenticationUI/signup.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -19,8 +20,6 @@ class EntryPage extends StatefulWidget {
 }
 
 class EntryPageState extends State<EntryPage>{
-  bool isLoggedIn = false;
-  bool _googleIsLoggedIn = false;
   Map userProfile;
   final fblogin = new FacebookLogin();
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
@@ -75,14 +74,11 @@ class EntryPageState extends State<EntryPage>{
     );
   }
 
-  _googleLogin() async{
+  _googleLogin() async {
     try{
       await _googleSignIn.signIn();
-      setState(() {
-        _googleIsLoggedIn = true;
-      });
       try {
-        await userStore.googleLogin(_googleSignIn.currentUser.displayName);
+        await userStore.googleLogin(_googleSignIn.currentUser.email);
         _goToEntryPoint();
       } on Failure catch (failure) {
         _showAlert(failure);
@@ -92,14 +88,7 @@ class EntryPageState extends State<EntryPage>{
     }
   }
 
-  _googleLogout(){
-    _googleSignIn.signOut();
-    setState(() {
-      _googleIsLoggedIn = false;
-    });
-  }
-
-  _login() async {
+  _facebookLogin() async {
     final result = await fblogin.logInWithReadPermissions(['email']);
     
     switch(result.status){
@@ -108,10 +97,8 @@ class EntryPageState extends State<EntryPage>{
         final graphResponse = await Http.get(
             'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
         final profile = JSON.jsonDecode(graphResponse.body);
-        print(profile);
         setState(() {
           userProfile = profile;
-          isLoggedIn = true;
         });
         try {
           await userStore.facebookLogin(userProfile['email']);
@@ -122,24 +109,11 @@ class EntryPageState extends State<EntryPage>{
         break;
 
       case FacebookLoginStatus.cancelledByUser:
-        setState(() {
-          isLoggedIn = false;
-        });
         break;
 
       case FacebookLoginStatus.error:
-        setState(() {
-          isLoggedIn = false;
-        });
          break;
     }
-  }
-
-  _logout(){
-    fblogin.logOut();
-    setState(() {
-      isLoggedIn = false;
-    });
   }
 
   @override
@@ -170,7 +144,7 @@ class EntryPageState extends State<EntryPage>{
               color: Colors.blue,
               child: ListTile(
                 onTap: (){
-                  _login();
+                  _facebookLogin();
                 },
                 leading: Icon(
                   FontAwesomeIcons.facebook,
@@ -217,7 +191,7 @@ class EntryPageState extends State<EntryPage>{
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SignUp(),
+                      builder: (context) => Signin(),
                     ),
                   );
                 },

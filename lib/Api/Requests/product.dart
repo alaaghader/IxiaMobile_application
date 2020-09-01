@@ -57,7 +57,7 @@ class ProductApi{
     int id
       ) async {
     try{
-        var response = await dio.get('api/product/GetProductDetails/{$id}');
+        var response = await dio.get('api/product/GetProductDetails/$id');
         
         print(response);
 

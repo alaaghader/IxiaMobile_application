@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Api/Models/product.dart';
 import 'package:ixiamobile_application/Api/Requests/product.dart';
@@ -43,7 +42,7 @@ class MyListState extends State<MyList>{
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProductDetails(),
+                            builder: (context) => ProductDetails(product: e,),
                           ),
                         );
                       },
@@ -82,7 +81,7 @@ class MyListState extends State<MyList>{
                                   ),
                                   SizedBox(height: 8.0),
                                   Text(
-                                    e.company.toString() ?? "",
+                                    e.company.name ?? "",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontWeight: FontWeight.bold),
                                   ),
