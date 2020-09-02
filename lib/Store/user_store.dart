@@ -147,7 +147,6 @@ abstract class _UserStore with Store {
 
   @action
   Future<User> updateProfile(
-      String id,
       String firstName,
       String middleName,
       String lastName,
@@ -155,7 +154,7 @@ abstract class _UserStore with Store {
       String address) async {
     loading = true;
     try {
-      this.profile = await ProfileApi.updateProfileAsync(id,firstName,middleName,lastName,birthDate,address);
+      this.profile = await ProfileApi.updateProfileAsync(firstName,middleName,lastName,birthDate,address);
     } finally {
       loading = false;
     }

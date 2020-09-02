@@ -19,9 +19,9 @@ TokenView _$TokenViewFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TokenViewToJson(TokenView instance) => <String, dynamic>{
-      'accessToken': instance.accessToken,
-      'email': instance.email,
-      'refreshToken': instance.refreshToken,
-      'expiresOn': instance.expiresOn?.toIso8601String(),
-      'userId': instance.userId,
-    };
+  'accessToken': instance.accessToken,
+  'email': instance.email,
+  'refreshToken': instance.refreshToken,
+  'expiresOn': instance.expiresOn?.toIso8601String(),
+  'userId': instance.userId,
+};

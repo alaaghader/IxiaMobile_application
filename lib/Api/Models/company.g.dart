@@ -13,15 +13,15 @@ Company _$CompanyFromJson(Map<String, dynamic> json) {
     phoneNumber: json['phoneNumber'] as String,
     products: (json['products'] as List)
         ?.map((e) =>
-            e == null ? null : Product.fromJson(e as Map<String, dynamic>))
+    e == null ? null : Product.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   )..email = json['email'] as String;
 }
 
 Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'phoneNumber': instance.phoneNumber,
-      'email': instance.email,
-      'products': instance.products,
-    };
+  'id': instance.id,
+  'name': instance.name,
+  'phoneNumber': instance.phoneNumber,
+  'email': instance.email,
+  'products': instance.products,
+};

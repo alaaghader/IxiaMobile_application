@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:ixiamobile_application/Api/Models/user.dart';
+import 'package:intl/intl.dart';
+import 'package:ixiamobile_application/Failures/failure.dart';
+import 'package:ixiamobile_application/Store/user_store.dart';
+import 'package:provider/provider.dart';
 
 class EditAccount extends StatefulWidget{
   @override
@@ -9,11 +15,7 @@ class EditAccount extends StatefulWidget{
 class EditAccountState extends State<EditAccount> with SingleTickerProviderStateMixin{
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
-
-  @override
-  void initState(){
-    super.initState();
-  }
+  final _birthDateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,254 +33,30 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
           ),
         ),
       ),
-      body: new Container(
-        color: Colors.white,
-        child: new ListView(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 20.0) ,
-                  child: new Stack(
-                    fit: StackFit.loose,
-                    children: <Widget>[
-                      new Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Container(
-                            width: 140.0,
-                            height: 140.0,
-                            decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                image: new AssetImage(
-                                    'res/images/unknown.jpg'
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 90.0, right: 100.0),
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            new CircleAvatar(
-                              backgroundColor: Colors.red,
-                              radius: 25.0,
-                              child: new Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            new Container(
-              color: Color(0xFFFFFFFF),
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 25.0),
-                child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              new Text(
-                                'Personal Information',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          new Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              _status ?
-                                  _getEditIcon() :
-                                  new Container(),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                      child: new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              new Text(
-                                'Name',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
-                      child: new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextField(
-                              decoration: const InputDecoration(
-                                hintText: "Enter your name",
-                              ),
-                              enabled: !_status,
-                              autofocus: !_status,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                      child: new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              new Text(
-                                  'Email',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                      child: new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextField(
-                              decoration: const InputDecoration(
-                                hintText: "Enter Your Email",
-                              ),
-                              enabled: !_status,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                      child: new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              new Text(
-                                'Phone Number',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                      child: new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextField(
-                              decoration: const InputDecoration(
-                                hintText: "Enter Your Phone Number",
-                              ),
-                              enabled: !_status,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                      child: new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              new Text(
-                                'BirthDay',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                      child: new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Flexible(
-                            child: new TextField(
-                              decoration: const InputDecoration(
-                                hintText: "Enter Your BirthDay",
-                              ),
-                              enabled: !_status,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    !_status ?
-                    _getActionButtons() :
-                    new Container(),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+      body: Observer(
+        builder: (context) {
+          var userStore = Provider.of<UserStore>(context);
+          var profileFuture = userStore.profile != null
+              ? Future.value(userStore.profile)
+              : userStore.loadProfile();
+
+          if (userStore.loading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return FutureBuilder(
+            future: profileFuture,
+            builder: (_, snapshot) {
+              var profile = userStore.profile;
+              _birthDateController.value = TextEditingValue(
+                text: _formatDate(profile.birthDate),
+              );
+              return _editAccountWidget(profile, userStore ,context);
+            },
+          );
+        },
       ),
     );
   }
@@ -290,7 +68,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
     super.dispose();
   }
 
-  Widget _getActionButtons() {
+  Widget _getActionButtons(User user, UserStore store, BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
       child: new Row(
@@ -311,30 +89,12 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     setState(() {
                       _status = !_status;
                       FocusScope.of(context).requestFocus(new FocusNode());
-                    });
-                  },
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-            ),
-            flex: 2,
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: new Container(
-                child: new RaisedButton(
-                  child: new Text(
-                    'Cancel'
-                  ),
-                  textColor: Colors.white,
-                  color: Colors.red,
-                  onPressed: () {
-                    setState(() {
-                      _status = !_status;
-                      FocusScope.of(context).requestFocus(new FocusNode());
+                      try {
+                        store.updateProfile(user.firstName, user.middleName, user.lastName, null, user.address);
+                        Navigator.pop(context);
+                      } on Failure catch (e) {
+                        Scaffold.of(context).showSnackBar(e.toSnackBar());
+                      }
                     });
                   },
                   shape: new RoundedRectangleBorder(
@@ -366,6 +126,372 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
           _status = false;
         });
       },
+    );
+  }
+
+  Widget _editAccountWidget(User user, UserStore store, BuildContext context) {
+    return new Container(
+      color: Colors.white,
+      child: new ListView(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 20.0) ,
+                child: new Stack(
+                  fit: StackFit.loose,
+                  children: <Widget>[
+                    new Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        new Container(
+                          width: 140.0,
+                          height: 140.0,
+                          decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                              image: new AssetImage(
+                                  'res/images/unknown.jpg'
+                              ),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 90.0, right: 100.0),
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          new CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 25.0,
+                            child: new Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          new Container(
+            color: Color(0xFFFFFFFF),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 25.0),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            new Text(
+                              'Personal Information',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        new Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            _status ?
+                            _getEditIcon() :
+                            new Container(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            new Text(
+                              'First Name',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Flexible(
+                          child: new TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: "Enter your first name",
+                            ),
+                            enabled: !_status,
+                            autofocus: !_status,
+                            initialValue: user.firstName,
+                            onChanged: (v) => user.firstName = v,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            new Text(
+                              'Middle Name',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Flexible(
+                          child: new TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: "Enter your middle name",
+                            ),
+                            enabled: !_status,
+                            autofocus: !_status,
+                            initialValue: user.middleName,
+                            onChanged: (v) => user.middleName = v,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            new Text(
+                              'Last Name',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Flexible(
+                          child: new TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: "Enter your last name",
+                            ),
+                            enabled: !_status,
+                            autofocus: !_status,
+                            initialValue: user.lastName,
+                            onChanged: (v) => user.lastName = v,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                  //   child: new Row(
+                  //     mainAxisSize: MainAxisSize.max,
+                  //     children: <Widget>[
+                  //       new Column(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         mainAxisSize: MainAxisSize.min,
+                  //         children: <Widget>[
+                  //           new Text(
+                  //             'Email',
+                  //             style: TextStyle(
+                  //               fontSize: 16.0,
+                  //               fontWeight: FontWeight.bold,
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                  //   child: new Row(
+                  //     mainAxisSize: MainAxisSize.max,
+                  //     children: <Widget>[
+                  //       new Flexible(
+                  //         child: new TextFormField(
+                  //           decoration: const InputDecoration(
+                  //             hintText: "Enter your email",
+                  //           ),
+                  //           enabled: !_status,
+                  //           autofocus: !_status,
+                  //           initialValue: user.email,
+                  //           onChanged: (v) => user.email = v,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            new Text(
+                              'Address',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Flexible(
+                          child: new TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: "Enter your Adress",
+                            ),
+                            enabled: !_status,
+                            autofocus: !_status,
+                            initialValue: user.address,
+                            onChanged: (v) => user.address = v,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            new Text(
+                              'BirthDay',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    child: new Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Flexible(
+                          child: new GestureDetector(
+                            onTap: () => _showBirthDatePicker(context, user),
+                            behavior: HitTestBehavior.opaque,
+                            child: IgnorePointer(
+                              child: TextFormField(
+                                controller: _birthDateController,
+                                decoration: InputDecoration(
+                                  labelText: 'Date of Birth',
+                                  hintText: 'dd/mm/yyyy',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  !_status ?
+                  _getActionButtons(user, store, context) :
+                  new Container(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDate(DateTime date) {
+    if (date == null) {
+      return "";
+    }
+    return DateFormat.yMMMMd().format(date);
+  }
+
+  Future _showBirthDatePicker(BuildContext context, User profile) async {
+    profile.birthDate = await showDatePicker(
+      context: context,
+      initialDate: profile.birthDate ?? DateTime.now(),
+      firstDate: DateTime.parse('0001-01-01'),
+      lastDate: DateTime.now(),
+    );
+    _birthDateController.value = TextEditingValue(
+      text: _formatDate(profile.birthDate),
     );
   }
 }

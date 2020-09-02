@@ -206,10 +206,12 @@ class SearchState extends State<Search> {
                 ),).toList(),
               );
             }else{
-              Text(
-                  'We\'re sorry but no product found :(',
-                style: TextStyle(
-                  fontSize: 25.0,
+              Center(
+                child: Text(
+                    'We\'re sorry but no product found :(',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                  ),
                 ),
               );
             }

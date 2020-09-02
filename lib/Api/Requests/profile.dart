@@ -22,7 +22,6 @@ class ProfileApi{
   }
 
   static Future<User> updateProfileAsync(
-    String id,
     String firstName,
     String middleName,
     String lastName,
@@ -30,8 +29,7 @@ class ProfileApi{
     String address
       ) async {
     try{
-        var response = await dio.post('api/user/EditProfile',data: {
-          "Id": id,
+        var response = await dio.post('api/profile/EditProfile',data: {
           "FirstName": firstName,
           "MiddleName": middleName,
           "LastName": lastName,
