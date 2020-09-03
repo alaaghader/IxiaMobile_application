@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Api/Models/product.dart';
 import 'package:ixiamobile_application/Api/Requests/product.dart';
+import 'package:ixiamobile_application/Store/user_store.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetails extends StatefulWidget{
   final Product product;
@@ -132,7 +134,7 @@ class ProductDetailsState extends State<ProductDetails>{
                                 },
                                 icon: Icon(
                                   Icons.favorite,
-                                  color: pressed ? Colors.red : Colors.white,
+                                  color: snapshot.data.isFavorite ? Colors.red : Colors.white,
                                 ),
                               ),
                               elevation: 5.0,

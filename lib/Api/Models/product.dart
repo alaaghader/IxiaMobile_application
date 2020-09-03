@@ -13,6 +13,7 @@ class Product{
   double price;
   String imageUrl;
   String description;
+  bool isFavorite;
 
   Product({
     this.id,
@@ -21,7 +22,8 @@ class Product{
     this.name,
     this.price,
     this.imageUrl,
-    this.description
+    this.description,
+    this.isFavorite,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) =>

@@ -5,6 +5,8 @@ import 'package:ixiamobile_application/Components/homePageProductWidget.dart';
 import 'package:ixiamobile_application/Components/productWidget.dart';
 import 'package:ixiamobile_application/Pages/Products/productDetail.dart';
 import 'package:ixiamobile_application/Api/Requests/product.dart';
+import 'package:ixiamobile_application/Store/user_store.dart';
+import 'package:provider/provider.dart';
 
 class Products extends StatefulWidget {
   @override

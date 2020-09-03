@@ -52,10 +52,10 @@ class ProductApi{
   }
 
   Future<Product> getProductDetailsAsync(
-      int id
+      int id,
       ) async {
     try{
-      var response = await dio.get('api/product/GetProductDetails/$id');
+      var response = await dio.post('api/product/GetProductDetails/$id');
 
       print(response);
 
