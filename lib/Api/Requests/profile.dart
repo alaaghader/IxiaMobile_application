@@ -25,7 +25,7 @@ class ProfileApi{
     String firstName,
     String middleName,
     String lastName,
-    DateTime birthDate,
+    //DateTime birthDate,
     String address
       ) async {
     try{
@@ -33,7 +33,7 @@ class ProfileApi{
           "FirstName": firstName,
           "MiddleName": middleName,
           "LastName": lastName,
-          "BirthDate": birthDate,
+          //"BirthDate": birthDate,
           "Address": address
         });
         

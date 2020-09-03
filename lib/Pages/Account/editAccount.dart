@@ -90,7 +90,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                       _status = !_status;
                       FocusScope.of(context).requestFocus(new FocusNode());
                       try {
-                        store.updateProfile(user.firstName, user.middleName, user.lastName, null, user.address);
+                        store.updateProfile(user.firstName, user.middleName, user.lastName, user.address);
                         Navigator.pop(context);
                       } on Failure catch (e) {
                         Scaffold.of(context).showSnackBar(e.toSnackBar());
@@ -340,46 +340,6 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                       ],
                     ),
                   ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                  //   child: new Row(
-                  //     mainAxisSize: MainAxisSize.max,
-                  //     children: <Widget>[
-                  //       new Column(
-                  //         mainAxisAlignment: MainAxisAlignment.start,
-                  //         mainAxisSize: MainAxisSize.min,
-                  //         children: <Widget>[
-                  //           new Text(
-                  //             'Email',
-                  //             style: TextStyle(
-                  //               fontSize: 16.0,
-                  //               fontWeight: FontWeight.bold,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
-                  //   child: new Row(
-                  //     mainAxisSize: MainAxisSize.max,
-                  //     children: <Widget>[
-                  //       new Flexible(
-                  //         child: new TextFormField(
-                  //           decoration: const InputDecoration(
-                  //             hintText: "Enter your email",
-                  //           ),
-                  //           enabled: !_status,
-                  //           autofocus: !_status,
-                  //           initialValue: user.email,
-                  //           onChanged: (v) => user.email = v,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                   Padding(
                     padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                     child: new Row(
@@ -448,7 +408,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                       children: <Widget>[
                         new Flexible(
                           child: new GestureDetector(
-                            onTap: () => _showBirthDatePicker(context, user),
+                            //onTap: () => _showBirthDatePicker(context, user),
                             behavior: HitTestBehavior.opaque,
                             child: IgnorePointer(
                               child: TextFormField(
@@ -484,12 +444,12 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
   }
 
   Future _showBirthDatePicker(BuildContext context, User profile) async {
-    profile.birthDate = await showDatePicker(
+    profile.birthDate = (await showDatePicker(
       context: context,
       initialDate: profile.birthDate ?? DateTime.now(),
       firstDate: DateTime.parse('0001-01-01'),
       lastDate: DateTime.now(),
-    );
+    ));
     _birthDateController.value = TextEditingValue(
       text: _formatDate(profile.birthDate),
     );

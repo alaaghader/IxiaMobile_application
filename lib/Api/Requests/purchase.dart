@@ -5,11 +5,9 @@ import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/utils/dio.dart';
 
 class PurchaseApi{
-  Future<List<Purchase>> getAllPurchasesAsync(
-    String id,
-      ) async {
+  Future<List<Purchase>> getAllPurchasesAsync() async {
     try{
-        var response = await dio.get('api/purchase/GetAllPurchases/{$id}');
+        var response = await dio.get('api/purchase/GetAllPurchases');
         
         print(response);
 

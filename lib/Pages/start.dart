@@ -61,10 +61,10 @@ class _StartPageState extends State<StartPage> {
        color: Colors.red,
        buttonBackgroundColor: Colors.redAccent,
        items: <Widget>[
-         Icon(Icons.home, size: 20,),
-         Icon(Icons.search, size: 20,),
-         Icon(Icons.menu, size: 20,),
-         Icon(Icons.account_circle, size: 20,),
+         Icon(Icons.home, size: 20, color: Colors.white,),
+         Icon(Icons.search, size: 20, color: Colors.white),
+         Icon(Icons.menu, size: 20, color: Colors.white),
+         Icon(Icons.account_circle, size: 20, color: Colors.white),
        ],
        animationDuration: Duration(
          milliseconds: 200,

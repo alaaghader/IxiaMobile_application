@@ -5,11 +5,9 @@ import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/utils/dio.dart';
 
 class FavoriteApi{
-  Future<List<Favorite>> getAllFavoritesAsync(
-    String id,
-      ) async {
+  Future<List<Favorite>> getAllFavoritesAsync() async {
     try{
-        var response = await dio.get('api/favorite/GetAllFavorites/{$id}');
+        var response = await dio.get('api/favorite/GetAllFavorites');
         
         print(response);
 

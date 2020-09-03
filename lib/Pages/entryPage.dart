@@ -141,6 +141,33 @@ class EntryPageState extends State<EntryPage>{
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25.0)
               ),
+              color: Colors.deepPurple,
+              child: ListTile(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StartPage(),
+                    ),
+                  );
+                },
+                leading: Icon(
+                  Icons.skip_next,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'Continue Without Logging in',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0)
+              ),
               color: Colors.blue,
               child: ListTile(
                 onTap: (){

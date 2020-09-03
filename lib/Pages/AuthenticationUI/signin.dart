@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Failures/failure.dart';
 import 'package:ixiamobile_application/Failures/internet_failure.dart';
 import 'package:ixiamobile_application/Failures/status_failure.dart';
+import 'package:ixiamobile_application/Pages/AuthenticationUI/signup.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
 
@@ -93,11 +94,10 @@ class SignInState extends State<Signin>{
       ),
       body: Form(
         key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(35.0),
+              padding: EdgeInsets.only(left: 35.0, right: 35.0, top: 250.0),
               child: Column(
                 children: <Widget>[
                   TextField(
@@ -114,6 +114,7 @@ class SignInState extends State<Signin>{
                       hintText: "Type Your Password",
                     ),
                     onChanged: (v) => setState(() => _password = v),
+                    obscureText: true,
                   ),
                   SizedBox(
                     height: 15,
@@ -122,18 +123,54 @@ class SignInState extends State<Signin>{
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.red)
+                          side: BorderSide(color: Colors.red),
                       ),
                       elevation: 2.0,
                       onPressed: _signin,
                       child: Text(
-                        'Signup',
+                        'Login',
                         style: TextStyle(
-                          fontSize: 20.0,
+                          fontSize: 18.0,
                           color: Colors.white,
                         ),
                       ),
                       color: Colors.red,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'Don\'t have an account?',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        RaisedButton(
+                          color: Colors.red,
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUp(),
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.red),
+                          ),
+                          elevation: 2.0,
+                          child: Text(
+                            'Sign up here',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

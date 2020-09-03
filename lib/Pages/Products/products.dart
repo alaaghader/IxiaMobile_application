@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Api/Models/product.dart';
+import 'package:ixiamobile_application/Components/homePageProductWidget.dart';
+import 'package:ixiamobile_application/Components/productWidget.dart';
 import 'package:ixiamobile_application/Pages/Products/productDetail.dart';
 import 'package:ixiamobile_application/Api/Requests/product.dart';
 
@@ -28,6 +30,7 @@ class ProductsState extends State<Products>{
              'Ixia',
              style: TextStyle(
                fontSize: 25,
+               fontFamily: 'Montserrat',
              ),
            ),
           centerTitle: true,
@@ -43,7 +46,7 @@ class ProductsState extends State<Products>{
                     childAspectRatio: 8.0 / 10.0,
                     crossAxisCount: 2,
                   ),
-                  children: snapshot.data.map((e) => ProductWidget(product: e,)).toList()
+                  children: snapshot.data.map((e) => HomePageProductWidget(product: e,)).toList()
                 );
               }else{
                 return Text('No products found');
@@ -52,72 +55,10 @@ class ProductsState extends State<Products>{
               return Text(snapshot.error);
             }
             return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.red,
-              ),
+              child: CircularProgressIndicator(),
             );
           },
         ),
-    );
-  }
-}
-
-class ProductWidget extends StatelessWidget {
-  final Product product;
-  const ProductWidget({
-    Key key,
-    this.product
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: new Card(
-        elevation: 3.5,
-        semanticContainer: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: new GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProductDetails(product: product,),
-              ),
-            );
-          },
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'res/images/myHoodie.png'),
-                    fit: BoxFit.fill,
-                  ),
-                  borderRadius: BorderRadius.circular(
-                      15.0),
-                ),
-                width: 200,
-                height: 200,
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  product.name,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

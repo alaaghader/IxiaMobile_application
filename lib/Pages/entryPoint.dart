@@ -5,8 +5,6 @@ import 'package:ixiamobile_application/Failures/failure.dart';
 import 'package:ixiamobile_application/Pages/start.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
-
-import 'AuthenticationUI/signup.dart';
 import 'entryPage.dart';
 
 class EntryPoint extends StatefulWidget{

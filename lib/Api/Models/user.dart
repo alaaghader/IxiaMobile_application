@@ -11,7 +11,7 @@ class User{
   DateTime birthDate;
   String address;
   String token;
-
+  String email;
 
   User({
     this.id,
@@ -20,7 +20,8 @@ class User{
     this.lastName,
     this.birthDate,
     this.address,
-    this.token
+    this.token,
+    this.email,
   });
 
     factory User.fromJson(Map<String, dynamic> json) =>

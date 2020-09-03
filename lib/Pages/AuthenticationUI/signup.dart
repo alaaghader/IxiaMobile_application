@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Failures/failure.dart';
 import 'package:ixiamobile_application/Failures/internet_failure.dart';
 import 'package:ixiamobile_application/Failures/status_failure.dart';
+import 'package:ixiamobile_application/Pages/AuthenticationUI/signin.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
 import '../start.dart';
@@ -96,74 +97,103 @@ class SignUpState extends State<SignUp>{
       ),
       body: Form(
         key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          padding: EdgeInsets.only(top: 180.0, left: 25.0, right: 25.0),
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(35.0),
+            TextField(
+              decoration: new InputDecoration(
+                hintText: "Type Your First Name",
+              ),
+              onChanged: (v) => setState(() => _firstName = v),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            TextField(
+              decoration: new InputDecoration(
+                hintText: "Type Your Last Name",
+              ),
+              onChanged: (v) => setState(() => _lastName = v),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            TextField(
+              decoration: new InputDecoration(
+                hintText: "Type Your User Name",
+              ),
+              onChanged: (v) => setState(() => _userName = v),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            TextField(
+              decoration: new InputDecoration(
+                hintText: "Type Your Email",
+              ),
+              onChanged: (v) => setState(() => _email = v),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            TextField(
+              decoration: new InputDecoration(
+                hintText: "Type Your Password",
+              ),
+              onChanged: (v) => setState(() => _password = v),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Center(
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.red)
+                ),
+                elevation: 2.0,
+                onPressed: _signUp,
+                child: Text(
+                  'Signup',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                  ),
+                ),
+                color: Colors.red,
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Center(
               child: Column(
                 children: <Widget>[
-                  TextField(
-                    decoration: new InputDecoration(
-                      hintText: "Type Your First Name",
+                  Text(
+                    'Already have an account?',
+                    style: TextStyle(
+                      fontSize: 16.0,
                     ),
-                    onChanged: (v) => setState(() => _firstName = v),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextField(
-                    decoration: new InputDecoration(
-                      hintText: "Type Your Last Name",
-                    ),
-                    onChanged: (v) => setState(() => _lastName = v),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextField(
-                    decoration: new InputDecoration(
-                      hintText: "Type Your User Name",
-                    ),
-                    onChanged: (v) => setState(() => _userName = v),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextField(
-                    decoration: new InputDecoration(
-                      hintText: "Type Your Email",
-                    ),
-                    onChanged: (v) => setState(() => _email = v),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextField(
-                    decoration: new InputDecoration(
-                      hintText: "Type Your Password",
-                    ),
-                    onChanged: (v) => setState(() => _password = v),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Center(
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.red)
+                  RaisedButton(
+                    color: Colors.red,
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Signin(),
                       ),
-                      elevation: 2.0,
-                      onPressed: _signUp,
-                      child: Text(
-                        'Signup',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white,
-                        ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.red),
+                    ),
+                    elevation: 2.0,
+                    child: Text(
+                      'Login here',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
                       ),
-                      color: Colors.red,
                     ),
                   ),
                 ],

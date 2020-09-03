@@ -150,11 +150,10 @@ abstract class _UserStore with Store {
       String firstName,
       String middleName,
       String lastName,
-      DateTime birthDate,
       String address) async {
     loading = true;
     try {
-      this.profile = await ProfileApi.updateProfileAsync(firstName,middleName,lastName,birthDate,address);
+      this.profile = await ProfileApi.updateProfileAsync(firstName,middleName,lastName,address);
     } finally {
       loading = false;
     }

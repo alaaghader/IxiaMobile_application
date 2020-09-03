@@ -117,9 +117,9 @@ mixin _$UserStore on _UserStore, Store {
 
   @override
   Future<User> updateProfile(String firstName, String middleName,
-      String lastName, DateTime birthDate, String address) {
+      String lastName, String address) {
     return _$updateProfileAsyncAction.run(() => super.updateProfile(
-         firstName, middleName, lastName, birthDate, address));
+         firstName, middleName, lastName, address));
   }
 
   @override

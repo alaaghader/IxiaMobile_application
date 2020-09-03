@@ -38,9 +38,7 @@ class ProductApi{
   Future<List<Product>> getAllProductAsync(
       ) async {
     try{
-        var response = await dio.get('api/product/GetAllProduct');
-        
-        print(response);
+      var response = await dio.get('api/product/GetAllProduct');
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
