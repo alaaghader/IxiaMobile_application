@@ -7,9 +7,7 @@ import 'package:ixiamobile_application/utils/dio.dart';
 class PurchaseApi{
   Future<List<Purchase>> getAllPurchasesAsync() async {
     try{
-        var response = await dio.get('api/purchase/GetAllPurchases');
-        
-        print(response);
+      var response = await dio.get('api/purchase/GetAllPurchases');
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
@@ -22,19 +20,15 @@ class PurchaseApi{
     }
   }
 
-  Future<bool> toggleFavoritesAsync(
-    String id,
+  Future<bool> addPurchaseAsync(
     int prodId,
     String comments
       ) async {
     try{
-        var response = await dio.post('api/purchase/TogglePurchase', data: {
-          "Id": id,
-          "ProdId": prodId,
-          "Comments": comments
-        });
-        
-        print(response);
+      var response = await dio.post('api/purchase/TogglePurchase', data: {
+        "ProdId": prodId,
+        "Comments": comments
+      });
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);

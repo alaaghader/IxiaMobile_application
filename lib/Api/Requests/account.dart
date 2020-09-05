@@ -13,15 +13,13 @@ class AccountApi{
     String password
       ) async {
     try{
-        var response = await dio.post('api/account/signup', data: {
+      var response = await dio.post('api/account/signup', data: {
           "FirstName": firstName,
           "LastName": lastName,
           "UserName": userName,
           "Email": email,
           "Password": password
         });
-        
-        print(response);
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
@@ -38,12 +36,10 @@ class AccountApi{
     String password
       ) async {
     try{
-        var response = await dio.post('api/account/Login', data: {
+      var response = await dio.post('api/account/Login', data: {
           "Email": email,
           "Password": password
         });
-        
-        print(response);
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
@@ -63,8 +59,6 @@ class AccountApi{
         "Email": email
       });
 
-      print(response);
-
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
       }
@@ -82,8 +76,6 @@ class AccountApi{
       var response = await dio.post('api/account/googleLogin', data: {
         "Email": email
       });
-
-      print(response);
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);

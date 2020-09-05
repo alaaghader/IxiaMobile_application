@@ -9,12 +9,10 @@ class CategoryApi{
     String description
       ) async {
     try{
-        var response = await dio.post('api/category/AddCategory', data: {
-          "Name": name,
-          "Description": description,
-        });
-        
-        print(response);
+      var response = await dio.post('api/category/AddCategory', data: {
+        "Name": name,
+        "Description": description,
+      });
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);

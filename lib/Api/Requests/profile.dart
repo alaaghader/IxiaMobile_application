@@ -7,9 +7,7 @@ import 'package:ixiamobile_application/utils/dio.dart';
 class ProfileApi{
   static Future<User> getUserAsync([String id]) async {
     try{
-        var response = await dio.get('api/profile/${id ?? ''}');
-        
-        print(response);
+      var response = await dio.get('api/profile/${id ?? ''}');
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
@@ -36,8 +34,6 @@ class ProfileApi{
           //"BirthDate": birthDate,
           "Address": address
         });
-        
-        print(response);
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
@@ -48,5 +44,4 @@ class ProfileApi{
       throw InternetFailure(message: error.message);
     }
   }
-
 }

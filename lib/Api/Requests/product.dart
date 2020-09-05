@@ -14,16 +14,14 @@ class ProductApi{
     String description,
       ) async {
     try{
-        var response = await dio.post('api/product/AddProduct', data: {
-          "CategoryId": categoryId,
-          "CompanyId": companyId,
-          "Name": name,
-          "Price": price,
-          "ImageUrl": imageUrl, 
-          "Description": description,
-        });
-        
-        print(response);
+      var response = await dio.post('api/product/AddProduct', data: {
+        "CategoryId": categoryId,
+        "CompanyId": companyId,
+        "Name": name,
+        "Price": price,
+        "ImageUrl": imageUrl,
+        "Description": description,
+      });
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
@@ -35,8 +33,7 @@ class ProductApi{
     }
   }
 
-  Future<List<Product>> getAllProductAsync(
-      ) async {
+  Future<List<Product>> getAllProductAsync() async {
     try{
       var response = await dio.get('api/product/GetAllProduct');
 
@@ -57,8 +54,6 @@ class ProductApi{
     try{
       var response = await dio.post('api/product/GetProductDetails/$id');
 
-      print(response);
-
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
       }
@@ -76,8 +71,6 @@ class ProductApi{
       var response = await dio.post('api/product/SearchProduct',data: {
         "Name":name,
       });
-
-      print(response);
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);

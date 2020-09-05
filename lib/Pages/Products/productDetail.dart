@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Api/Models/product.dart';
+import 'package:ixiamobile_application/Api/Requests/favorite.dart';
 import 'package:ixiamobile_application/Api/Requests/product.dart';
+import 'package:ixiamobile_application/Failures/failure.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +19,7 @@ class ProductDetailsState extends State<ProductDetails>{
   bool pressed = false;
   Future<Product> _productFuture;
   final productApi = ProductApi();
+  final favoriteApi = FavoriteApi();
 
   @override
   void initState() {
@@ -41,6 +44,8 @@ class ProductDetailsState extends State<ProductDetails>{
         future: _productFuture,
         builder: (context, snapshot){
           if(snapshot.connectionState == ConnectionState.done){
+            var userStore = Provider.of<UserStore>(context);
+            pressed = snapshot.data.isFavorite;
            return Stack(
               children: [
                 SingleChildScrollView(
@@ -126,16 +131,27 @@ class ProductDetailsState extends State<ProductDetails>{
                                 minHeight: 45.0,
                                 minWidth: 45.0,
                               ),
-                              child: IconButton(
-                                onPressed: (){
-                                  setState(() {
-                                    pressed = !pressed;
-                                  });
+                              child: StatefulBuilder(
+                                builder: (context, setState){
+                                  return IconButton(
+                                    onPressed: () async {
+                                      if(userStore.isLoggedIn){
+                                        try {
+                                          await favoriteApi.toggleFavoritesAsync(snapshot.data.id);
+                                          setState(() {
+                                            pressed = !pressed;
+                                          });
+                                        } on Failure catch (e) {
+                                          Scaffold.of(context).showSnackBar(e.toSnackBar());
+                                        }
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.favorite,
+                                      color: pressed ? Colors.red : Colors.white,
+                                    ),
+                                  );
                                 },
-                                icon: Icon(
-                                  Icons.favorite,
-                                  color: snapshot.data.isFavorite ? Colors.red : Colors.white,
-                                ),
                               ),
                               elevation: 5.0,
                               shape: CircleBorder(),

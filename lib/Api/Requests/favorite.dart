@@ -7,9 +7,7 @@ import 'package:ixiamobile_application/utils/dio.dart';
 class FavoriteApi{
   Future<List<Favorite>> getAllFavoritesAsync() async {
     try{
-        var response = await dio.get('api/favorite/GetAllFavorites');
-        
-        print(response);
+      var response = await dio.get('api/favorite/GetAllFavorites');
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
@@ -23,16 +21,10 @@ class FavoriteApi{
   }
 
   Future<bool> toggleFavoritesAsync(
-    String id,
-    int prodId
+    int id
       ) async {
     try{
-        var response = await dio.post('api/favorite/ToggleFavorite', data: {
-          "Id": id,
-          "ProdId": prodId
-        });
-        
-        print(response);
+      var response = await dio.post('api/favorite/ToggleFavorite/$id', data: id);
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);

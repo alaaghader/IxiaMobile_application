@@ -9,6 +9,13 @@ import 'package:provider/provider.dart';
 import 'editAccount.dart';
 
 class Account extends StatelessWidget {
+  String typeName(String firstName, String lastName){
+    if(firstName == null || lastName == null){
+      return 'ixia user'.toUpperCase();
+    }else{
+      return firstName.toUpperCase()  + " " + lastName.toUpperCase();
+    }
+  }
   Widget _buildSettingsList(BuildContext context, UserStore userStore) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +163,7 @@ class Account extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        userStore.profile.firstName.toUpperCase() + " " + userStore.profile.lastName.toUpperCase(),
+                                        typeName(userStore.profile.firstName, userStore.profile.lastName),
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5,

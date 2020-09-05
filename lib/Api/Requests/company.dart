@@ -11,13 +11,11 @@ class CompanyApi{
     String email
       ) async {
     try{
-        var response = await dio.post('api/company/AddCompany', data: {
-          "Name": name,
-          "PhoneNumber": phoneNumber,
-          "Email": email
-        });
-        
-        print(response);
+      var response = await dio.post('api/company/AddCompany', data: {
+        "Name": name,
+        "PhoneNumber": phoneNumber,
+        "Email": email
+      });
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
@@ -29,12 +27,9 @@ class CompanyApi{
     }
   }
 
-  Future<List<Company>> getCompaniesAsync(
-      ) async {
+  Future<List<Company>> getCompaniesAsync() async {
     try{
-        var response = await dio.get('api/company/GetCompanies');
-        
-        print(response);
+      var response = await dio.get('api/company/GetCompanies');
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);
@@ -51,9 +46,7 @@ class CompanyApi{
       int id
       ) async {
     try{
-        var response = await dio.get('api/company/GetCompanyDetails/{$id}');
-        
-        print(response);
+      var response = await dio.get('api/company/GetCompanyDetails/{$id}');
 
       if (response.statusCode >= 400) {
         throw StatusFailure.fromResponse(response);

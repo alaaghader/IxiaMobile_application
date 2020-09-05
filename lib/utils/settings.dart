@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-final kAppReleaseUrl = '';
-final kAppLocalUrl = 'http://10.0.2.2:5000'; 
+final kAppReleaseUrl = 'http://alaaghader-001-site1.gtempurl.com';
+final kAppLocalUrl = 'http://alaaghader-001-site1.gtempurl.com';
 
 final kAppUrl =  kAppLocalUrl;
 final kDefaultImage = '';
