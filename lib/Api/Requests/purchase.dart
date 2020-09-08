@@ -25,7 +25,7 @@ class PurchaseApi{
     String comments
       ) async {
     try{
-      var response = await dio.post('api/purchase/TogglePurchase', data: {
+      var response = await dio.post('api/purchase/AddPurchase/$prodId', data: {
         "ProdId": prodId,
         "Comments": comments
       });

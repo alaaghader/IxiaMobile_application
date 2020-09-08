@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Api/Models/product.dart';
 import 'package:ixiamobile_application/Api/Requests/favorite.dart';
 import 'package:ixiamobile_application/Api/Requests/product.dart';
+import 'package:ixiamobile_application/Api/Requests/purchase.dart';
 import 'package:ixiamobile_application/Failures/failure.dart';
+import 'package:ixiamobile_application/Pages/AuthenticationUI/signin.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +22,8 @@ class ProductDetailsState extends State<ProductDetails>{
   Future<Product> _productFuture;
   final productApi = ProductApi();
   final favoriteApi = FavoriteApi();
+  final purchaseApi = PurchaseApi();
+  String comments;
 
   @override
   void initState() {
@@ -29,6 +33,7 @@ class ProductDetailsState extends State<ProductDetails>{
 
   @override
   Widget build(BuildContext context) {
+    var userStore = Provider.of<UserStore>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -44,7 +49,6 @@ class ProductDetailsState extends State<ProductDetails>{
         future: _productFuture,
         builder: (context, snapshot){
           if(snapshot.connectionState == ConnectionState.done){
-            var userStore = Provider.of<UserStore>(context);
             pressed = snapshot.data.isFavorite;
            return Stack(
               children: [
@@ -81,7 +85,7 @@ class ProductDetailsState extends State<ProductDetails>{
                                 children: <Widget>[
                                   Positioned(
                                     top: 25.0,
-                                    right: -40.0,
+                                    right: -70.0,
                                     child: Container(
                                       width: 160.0,
                                       height: 40.0,
@@ -137,13 +141,17 @@ class ProductDetailsState extends State<ProductDetails>{
                                     onPressed: () async {
                                       if(userStore.isLoggedIn){
                                         try {
-                                          await favoriteApi.toggleFavoritesAsync(snapshot.data.id);
+                                          await favoriteApi.toggleFavoritesAsync(
+                                              snapshot.data.id
+                                          );
                                           setState(() {
                                             pressed = !pressed;
                                           });
                                         } on Failure catch (e) {
                                           Scaffold.of(context).showSnackBar(e.toSnackBar());
                                         }
+                                      }else{
+                                        _showLoginDialog();
                                       }
                                     },
                                     icon: Icon(
@@ -242,7 +250,9 @@ class ProductDetailsState extends State<ProductDetails>{
           child: Padding(
             padding: const EdgeInsets.only(left:85.0, right: 85.0),
             child: RaisedButton(
-              onPressed: (){},
+              onPressed: (){
+                _showDialog(userStore, widget.product.id);
+              },
               color: Colors.red,
               child: Text('ORDER NOW',
                 style: TextStyle(
@@ -253,6 +263,102 @@ class ProductDetailsState extends State<ProductDetails>{
           ),
         ),
       ),
+    );
+  }
+
+  void _showDialog(UserStore profile, int prodId){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return new AlertDialog(
+          title: new Text(
+              profile.isLoggedIn ?
+              "Add a comment" :
+              "You're not logged in, please login to add an order"
+          ),
+          content: profile.isLoggedIn ?
+          new TextField(
+            onChanged: (v){
+              comments = v;
+            },
+          ) :
+          new SizedBox(
+            height: 10,
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(
+                  'Cancel'
+              ),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+            profile.isLoggedIn ?
+            new FlatButton(
+              child: new Text(
+                  'Add Order'
+              ),
+              onPressed: () async {
+                try {
+                  await purchaseApi.addPurchaseAsync(prodId, comments);
+                  Navigator.of(context).pop();
+                } on Failure catch (e) {
+                  Scaffold.of(context).showSnackBar(e.toSnackBar());
+                }
+              },
+            ) :
+            new FlatButton(
+              child: new Text(
+                  'Login'
+              ),
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Signin(),
+                  ),
+                );
+              },
+            )
+          ],
+        );
+      }
+    );
+  }
+  void _showLoginDialog(){
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return new AlertDialog(
+            title: new Text(
+                "You're not logged in, please login to add a favorite"
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                    'Cancel'
+                ),
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text(
+                    'Login'
+                ),
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Signin(),
+                    ),
+                  );
+                },
+              )
+            ],
+          );
+        }
     );
   }
 

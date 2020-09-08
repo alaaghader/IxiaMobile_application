@@ -44,7 +44,7 @@ class HomePageProductWidget extends StatelessWidget {
                       15.0),
                 ),
                 width: 200,
-                height: 200,
+                height: 175,
               ),
               Container(
                 alignment: Alignment.center,

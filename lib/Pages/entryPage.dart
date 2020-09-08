@@ -89,7 +89,7 @@ class EntryPageState extends State<EntryPage>{
   }
 
   _facebookLogin() async {
-    final result = await fblogin.logInWithReadPermissions(['email']);
+    final result = await fblogin.logIn(['email']);
     
     switch(result.status){
       case FacebookLoginStatus.loggedIn:
@@ -121,120 +121,122 @@ class EntryPageState extends State<EntryPage>{
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              alignment: Alignment.topCenter,
-              margin: EdgeInsets.only(bottom: 200),
-              child: Text(
-                'WELCOME TO \n    IXIA APP!',
-                style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.redAccent
+        child: ListView(
+          children: <Widget>[Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                alignment: Alignment.topCenter,
+                margin: EdgeInsets.only(bottom: 200),
+                child: Text(
+                  'WELCOME TO \n    IXIA APP!',
+                  style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.redAccent
+                  ),
                 ),
               ),
-            ),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0)
-              ),
-              color: Colors.deepPurple,
-              child: ListTile(
-                onTap: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => StartPage(),
+              Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.0)
+                ),
+                color: Colors.deepPurple,
+                child: ListTile(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StartPage(),
+                      ),
+                    );
+                  },
+                  leading: Icon(
+                    Icons.skip_next,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Continue Without Logging in',
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
-                  );
-                },
-                leading: Icon(
-                  Icons.skip_next,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'Continue Without Logging in',
-                  style: TextStyle(
-                    color: Colors.white,
                   ),
                 ),
               ),
-            ),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0)
-              ),
-              color: Colors.blue,
-              child: ListTile(
-                onTap: (){
-                  _facebookLogin();
-                },
-                leading: Icon(
-                  FontAwesomeIcons.facebook,
-                  color: Colors.white,
+              Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.0)
                 ),
-                title: Text(
-                  'Continue With Facebook',
-                  style: TextStyle(
+                color: Colors.blue,
+                child: ListTile(
+                  onTap: (){
+                    _facebookLogin();
+                  },
+                  leading: Icon(
+                    FontAwesomeIcons.facebook,
                     color: Colors.white,
                   ),
-                ),
-              ),
-            ),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0)
-              ),
-              color: Colors.red,
-              child: ListTile(
-                onTap: (){
-                  _googleLogin();
-                },
-                leading: Icon(
-                  FontAwesomeIcons.google,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'Continue With Google',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0)
-              ),
-              color: Colors.grey[500],
-              child: ListTile(
-                onTap: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Signin(),
+                  title: Text(
+                    'Continue With Facebook',
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
-                  );
-                },
-                leading: Icon(
-                  Icons.email,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'Continue With Email',
-                  style: TextStyle(
-                    color: Colors.white,
                   ),
                 ),
               ),
-            ),
-          ],
+              Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.0)
+                ),
+                color: Colors.red,
+                child: ListTile(
+                  onTap: (){
+                    _googleLogin();
+                  },
+                  leading: Icon(
+                    FontAwesomeIcons.google,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Continue With Google',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.0)
+                ),
+                color: Colors.grey[500],
+                child: ListTile(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Signin(),
+                      ),
+                    );
+                  },
+                  leading: Icon(
+                    Icons.email,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Continue With Email',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )],
         ),
       ),
     );
