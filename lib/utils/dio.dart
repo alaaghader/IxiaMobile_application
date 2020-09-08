@@ -18,7 +18,7 @@ Future<String> getToken() async {
 }
 
 Dio _createHttpClient() {
-  var dio = Dio(BaseOptions(connectTimeout: 12000));
+  var dio = Dio(BaseOptions(connectTimeout: 250000));
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options) async {

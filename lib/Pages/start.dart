@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Pages/Account/account.dart';
+import 'Map/googleMap.dart';
 import 'MyLists/myList.dart';
 import 'Products/products.dart';
 import 'Search/search.dart';
@@ -20,6 +21,7 @@ class _StartPageState extends State<StartPage> {
   final Search _search = Search();
   final MyList _myList = MyList();
   final Account _account = Account();
+  final MapsDemo _map = MapsDemo();
 
   Widget _showPage = new Products();
 
@@ -35,6 +37,9 @@ class _StartPageState extends State<StartPage> {
         return _myList;
         break;
       case 3:
+        return _map;
+        break;
+      case 4:
         return _account;
         break;
       default:
@@ -64,6 +69,7 @@ class _StartPageState extends State<StartPage> {
          Icon(Icons.home, size: 20, color: Colors.white,),
          Icon(Icons.search, size: 20, color: Colors.white),
          Icon(Icons.menu, size: 20, color: Colors.white),
+         Icon(Icons.map, size: 20, color: Colors.white),
          Icon(Icons.account_circle, size: 20, color: Colors.white),
        ],
        animationDuration: Duration(
