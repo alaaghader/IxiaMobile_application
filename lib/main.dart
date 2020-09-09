@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
-import 'package:ixiamobile_application/utils/settings.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
@@ -25,8 +24,8 @@ class _MyAppState extends State<MyApp> {
     userStore = UserStore();
 
     _reactionDisposer = reaction(
-          (_) => userStore.isLoggedIn,
-          (isLoggedIn) {
+      (_) => userStore.isLoggedIn,
+      (isLoggedIn) {
         if (!isLoggedIn) {
           setState(() {
             userStore = UserStore();
@@ -53,10 +52,8 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         navigatorKey: _navigatorKey,
         debugShowCheckedModeBanner: false,
-        title: 'Al Manasek',
-        theme:  ThemeData(
-            accentColor: Colors.red
-        ),
+        title: 'Ixia',
+        theme: ThemeData(accentColor: Colors.red),
         home: EntryPoint(),
       ),
     );

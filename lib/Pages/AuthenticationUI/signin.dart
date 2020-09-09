@@ -9,12 +9,12 @@ import 'package:provider/provider.dart';
 
 import '../start.dart';
 
-class Signin extends StatefulWidget{
+class Signin extends StatefulWidget {
   @override
   SignInState createState() => SignInState();
 }
 
-class SignInState extends State<Signin>{
+class SignInState extends State<Signin> {
   final _formKey = GlobalKey<FormState>();
   String _email = "";
   String _password = "";
@@ -55,13 +55,14 @@ class SignInState extends State<Signin>{
   }
 
   void _goToEntryPoint() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => StartPage(),
       ),
     );
   }
+
   @override
   void didChangeDependencies() {
     userStore = Provider.of<UserStore>(context);
@@ -122,8 +123,8 @@ class SignInState extends State<Signin>{
                   Center(
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: BorderSide(color: Colors.red),
                       ),
                       elevation: 2.0,
                       onPressed: _signin,

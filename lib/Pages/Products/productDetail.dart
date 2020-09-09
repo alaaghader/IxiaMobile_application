@@ -9,7 +9,7 @@ import 'package:ixiamobile_application/Pages/AuthenticationUI/signin.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
 
-class ProductDetails extends StatefulWidget{
+class ProductDetails extends StatefulWidget {
   final Product product;
 
   const ProductDetails({Key key, this.product}) : super(key: key);
@@ -17,7 +17,7 @@ class ProductDetails extends StatefulWidget{
   ProductDetailsState createState() => ProductDetailsState();
 }
 
-class ProductDetailsState extends State<ProductDetails>{
+class ProductDetailsState extends State<ProductDetails> {
   bool pressed = false;
   Future<Product> _productFuture;
   final productApi = ProductApi();
@@ -40,6 +40,7 @@ class ProductDetailsState extends State<ProductDetails>{
           'Ixia',
           style: TextStyle(
             fontSize: 25,
+            fontFamily: 'Montserrat',
           ),
         ),
         centerTitle: true,
@@ -47,10 +48,10 @@ class ProductDetailsState extends State<ProductDetails>{
       ),
       body: FutureBuilder<Product>(
         future: _productFuture,
-        builder: (context, snapshot){
-          if(snapshot.connectionState == ConnectionState.done){
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
             pressed = snapshot.data.isFavorite;
-           return Stack(
+            return Stack(
               children: [
                 SingleChildScrollView(
                   child: Column(
@@ -105,7 +106,8 @@ class ProductDetailsState extends State<ProductDetails>{
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                            padding:
+                                const EdgeInsets.only(left: 20.0, right: 20.0),
                             child: Container(
                               width: double.infinity,
                               height: screenAwareSize(250, context),
@@ -136,27 +138,29 @@ class ProductDetailsState extends State<ProductDetails>{
                                 minWidth: 45.0,
                               ),
                               child: StatefulBuilder(
-                                builder: (context, setState){
+                                builder: (context, setState) {
                                   return IconButton(
                                     onPressed: () async {
-                                      if(userStore.isLoggedIn){
+                                      if (userStore.isLoggedIn) {
                                         try {
-                                          await favoriteApi.toggleFavoritesAsync(
-                                              snapshot.data.id
-                                          );
+                                          await favoriteApi
+                                              .toggleFavoritesAsync(
+                                                  snapshot.data.id);
                                           setState(() {
                                             pressed = !pressed;
                                           });
                                         } on Failure catch (e) {
-                                          Scaffold.of(context).showSnackBar(e.toSnackBar());
+                                          Scaffold.of(context)
+                                              .showSnackBar(e.toSnackBar());
                                         }
-                                      }else{
+                                      } else {
                                         _showLoginDialog();
                                       }
                                     },
                                     icon: Icon(
                                       Icons.favorite,
-                                      color: pressed ? Colors.red : Colors.white,
+                                      color:
+                                          pressed ? Colors.red : Colors.white,
                                     ),
                                   );
                                 },
@@ -209,8 +213,7 @@ class ProductDetailsState extends State<ProductDetails>{
                                       fontWeight: FontWeight.w300,
                                       fontFamily: "Montserrat",
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 16.0
-                                  ),
+                                      fontSize: 16.0),
                                 ),
                               ),
                             ),
@@ -237,7 +240,7 @@ class ProductDetailsState extends State<ProductDetails>{
                 ),
               ],
             );
-          }else if(snapshot.hasError){
+          } else if (snapshot.hasError) {
             return Text(snapshot.error);
           }
           return Center(child: CircularProgressIndicator());
@@ -246,17 +249,18 @@ class ProductDetailsState extends State<ProductDetails>{
       bottomNavigationBar: BottomAppBar(
         color: Colors.transparent,
         child: Padding(
-          padding: EdgeInsets.only(left:20.0, right: 20.0),
+          padding: EdgeInsets.only(left: 20.0, right: 20.0),
           child: Padding(
-            padding: const EdgeInsets.only(left:85.0, right: 85.0),
+            padding: const EdgeInsets.only(left: 85.0, right: 85.0),
             child: RaisedButton(
-              onPressed: (){
+              onPressed: () {
                 _showDialog(userStore, widget.product.id);
               },
               color: Colors.red,
-              child: Text('ORDER NOW',
+              child: Text(
+                'ORDER NOW',
                 style: TextStyle(
-                    color: Colors.white,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -266,88 +270,75 @@ class ProductDetailsState extends State<ProductDetails>{
     );
   }
 
-  void _showDialog(UserStore profile, int prodId){
-    showDialog(
-      context: context,
-      builder: (BuildContext context){
-        return new AlertDialog(
-          title: new Text(
-              profile.isLoggedIn ?
-              "Add a comment" :
-              "You're not logged in, please login to add an order"
-          ),
-          content: profile.isLoggedIn ?
-          new TextField(
-            onChanged: (v){
-              comments = v;
-            },
-          ) :
-          new SizedBox(
-            height: 10,
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                  'Cancel'
-              ),
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
-            ),
-            profile.isLoggedIn ?
-            new FlatButton(
-              child: new Text(
-                  'Add Order'
-              ),
-              onPressed: () async {
-                try {
-                  await purchaseApi.addPurchaseAsync(prodId, comments);
-                  Navigator.of(context).pop();
-                } on Failure catch (e) {
-                  Scaffold.of(context).showSnackBar(e.toSnackBar());
-                }
-              },
-            ) :
-            new FlatButton(
-              child: new Text(
-                  'Login'
-              ),
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Signin(),
-                  ),
-                );
-              },
-            )
-          ],
-        );
-      }
-    );
-  }
-  void _showLoginDialog(){
+  void _showDialog(UserStore profile, int prodId) {
     showDialog(
         context: context,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return new AlertDialog(
-            title: new Text(
-                "You're not logged in, please login to add a favorite"
-            ),
+            title: new Text(profile.isLoggedIn
+                ? "Add a comment"
+                : "You're not logged in, please login to add an order"),
+            content: profile.isLoggedIn
+                ? new TextField(
+                    onChanged: (v) {
+                      comments = v;
+                    },
+                  )
+                : new SizedBox(
+                    height: 10,
+                  ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text(
-                    'Cancel'
-                ),
-                onPressed: (){
+                child: new Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              profile.isLoggedIn
+                  ? new FlatButton(
+                      child: new Text('Add Order'),
+                      onPressed: () async {
+                        try {
+                          await purchaseApi.addPurchaseAsync(prodId, comments);
+                          Navigator.of(context).pop();
+                        } on Failure catch (e) {
+                          Scaffold.of(context).showSnackBar(e.toSnackBar());
+                        }
+                      },
+                    )
+                  : new FlatButton(
+                      child: new Text('Login'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Signin(),
+                          ),
+                        );
+                      },
+                    )
+            ],
+          );
+        });
+  }
+
+  void _showLoginDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: new Text(
+                "You're not logged in, please login to add a favorite"),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Cancel'),
+                onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text(
-                    'Login'
-                ),
-                onPressed: (){
+                child: new Text('Login'),
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -358,11 +349,10 @@ class ProductDetailsState extends State<ProductDetails>{
               )
             ],
           );
-        }
-    );
+        });
   }
 
-  screenAwareSize(int size, BuildContext context){
+  screenAwareSize(int size, BuildContext context) {
     double baseHeight = 640.0;
     return size * MediaQuery.of(context).size.height / baseHeight;
   }

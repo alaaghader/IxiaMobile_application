@@ -8,12 +8,12 @@ import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
 import '../start.dart';
 
-class SignUp extends StatefulWidget{
+class SignUp extends StatefulWidget {
   @override
   SignUpState createState() => SignUpState();
 }
 
-class SignUpState extends State<SignUp>{
+class SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   String _firstName = "";
   String _lastName = "";
@@ -63,7 +63,7 @@ class SignUpState extends State<SignUp>{
   }
 
   void _goToEntryPoint() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => StartPage(),
@@ -74,7 +74,8 @@ class SignUpState extends State<SignUp>{
   void _signUp() async {
     if (_formKey.currentState.validate()) {
       try {
-        await userStore.signUp(_firstName, _lastName, _userName, _email, _password);
+        await userStore.signUp(
+            _firstName, _lastName, _userName, _email, _password);
         _goToEntryPoint();
       } on Failure catch (failure) {
         _showAlert(failure);
@@ -149,8 +150,7 @@ class SignUpState extends State<SignUp>{
               child: RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.red)
-                ),
+                    side: BorderSide(color: Colors.red)),
                 elevation: 2.0,
                 onPressed: _signUp,
                 child: Text(

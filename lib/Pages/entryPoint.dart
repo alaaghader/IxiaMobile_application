@@ -7,14 +7,14 @@ import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
 import 'entryPage.dart';
 
-class EntryPoint extends StatefulWidget{
+class EntryPoint extends StatefulWidget {
   EntryPoint({Key key}) : super(key: key);
 
- @override
- _EntryPointState createState() => _EntryPointState();
+  @override
+  _EntryPointState createState() => _EntryPointState();
 }
 
-class _EntryPointState extends State<EntryPoint>{
+class _EntryPointState extends State<EntryPoint> {
   UserStore _userStore;
   Future<void> _future;
 
@@ -39,45 +39,45 @@ class _EntryPointState extends State<EntryPoint>{
         : _userStore.loadToken());
   }
 
- @override
- Widget build(BuildContext context) {
-   return Scaffold(
-     body:  SafeArea(
-       child: FutureBuilder<void>(
-         future: _future,
-         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-           if (snapshot.connectionState == ConnectionState.done) {
-             if (snapshot.hasData || _userStore.hasLoadedToken) {
-               WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                 if (_userStore.isLoggedIn) {
-                   Navigator.push(
-                     context,
-                     MaterialPageRoute(
-                       builder: (context) => StartPage(),
-                     ),
-                   );
-                 } else {
-                   Navigator.push(
-                     context,
-                     MaterialPageRoute(
-                       builder: (context) => EntryPage(),
-                     ),
-                   );
-                 }
-               });
-             } else if (snapshot.hasError) {
-               WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                 var error = snapshot.error;
-                 if (error is Failure) {
-                   Scaffold.of(context).showSnackBar(error.toSnackBar());
-                 }
-               });
-             }
-           }
-           return Center(child: CircularProgressIndicator());
-         },
-       ),
-     ),
-   );
- }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: FutureBuilder<void>(
+          future: _future,
+          builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData || _userStore.hasLoadedToken) {
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  if (_userStore.isLoggedIn) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StartPage(),
+                      ),
+                    );
+                  } else {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EntryPage(),
+                      ),
+                    );
+                  }
+                });
+              } else if (snapshot.hasError) {
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  var error = snapshot.error;
+                  if (error is Failure) {
+                    Scaffold.of(context).showSnackBar(error.toSnackBar());
+                  }
+                });
+              }
+            }
+            return Center(child: CircularProgressIndicator());
+          },
+        ),
+      ),
+    );
+  }
 }

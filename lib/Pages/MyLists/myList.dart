@@ -14,7 +14,7 @@ class MyList extends StatefulWidget {
   MyListState createState() => MyListState();
 }
 
-class MyListState extends State<MyList>{
+class MyListState extends State<MyList> {
   Future<List<Purchase>> getPurchases;
   Future<List<Favorite>> getFavorites;
   final purchases = PurchaseApi();
@@ -28,7 +28,7 @@ class MyListState extends State<MyList>{
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
-              'Manage My List',
+            'Ixia',
             style: TextStyle(
               fontSize: 25,
               fontFamily: 'Montserrat',
@@ -38,69 +38,91 @@ class MyListState extends State<MyList>{
           backgroundColor: Colors.red,
           bottom: TabBar(
             tabs: <Widget>[
-              Tab(text: 'Purchases',),
-              Tab(text: 'Favorites',),
+              Tab(
+                text: 'Purchases',
+              ),
+              Tab(
+                text: 'Favorites',
+              ),
             ],
           ),
         ),
         body: Observer(
-          builder: (context){
+          builder: (context) {
             var userStore = Provider.of<UserStore>(context);
-            if(userStore.isLoggedIn){
+            if (userStore.isLoggedIn) {
               getPurchases = purchases.getAllPurchasesAsync();
               getFavorites = favorites.getAllFavoritesAsync();
-              return
-                TabBarView(
-                  children: <Widget>[
-                    FutureBuilder<List<Purchase>>(
-                      future: getPurchases,
-                      builder: (context, snapshot){
-                        if(snapshot.connectionState == ConnectionState.done){
-                          if(snapshot.data.length != 0){
-                            return ListView(
-                              scrollDirection: Axis.vertical,
-                              children: snapshot.data
-                                  .map((e) => ProductWidget(product: e.product,),).toList(),
-                            );
-                          }else{
-                            return Center(child: Text('You don\'t have any purchase yet'),);
-                          }
-                        }else if(snapshot.hasError){
+              return TabBarView(
+                children: <Widget>[
+                  FutureBuilder<List<Purchase>>(
+                    future: getPurchases,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.data.length != 0) {
+                          return ListView(
+                            scrollDirection: Axis.vertical,
+                            children: snapshot.data
+                                .map(
+                                  (e) => ProductWidget(
+                                    product: e.product,
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        } else {
                           return Center(
-                            child: Text(
-                              snapshot.error,
-                            ),
+                            child: Text('You don\'t have any purchase yet'),
                           );
                         }
-                        return Center(child: CircularProgressIndicator(),);
-                      },
-                    ),
-                    FutureBuilder<List<Favorite>>(
-                      future: getFavorites,
-                      builder: (context, snapshot){
-                        if(snapshot.connectionState == ConnectionState.done){
-                          if(snapshot.data.length != 0){
-                            return ListView(
-                              scrollDirection: Axis.vertical,
-                              children: snapshot.data
-                                  .map((e) => ProductWidget(product: e.product,),).toList(),
-                            );
-                          }else{
-                            return Center(child: Text('You don\'t have any favorite product yet'),);
-                          }
-                        }else if(snapshot.hasError){
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            snapshot.error,
+                          ),
+                        );
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                  FutureBuilder<List<Favorite>>(
+                    future: getFavorites,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.data.length != 0) {
+                          return ListView(
+                            scrollDirection: Axis.vertical,
+                            children: snapshot.data
+                                .map(
+                                  (e) => ProductWidget(
+                                    product: e.product,
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        } else {
                           return Center(
                             child: Text(
-                              snapshot.error,
-                            ),
+                                'You don\'t have any favorite product yet'),
                           );
                         }
-                        return Center(child: CircularProgressIndicator(),);
-                      },
-                    ),
-                  ],
-                );
-            }else{
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            snapshot.error,
+                          ),
+                        );
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ],
+              );
+            } else {
               return Center(
                 child: FlatButton.icon(
                   onPressed: () {

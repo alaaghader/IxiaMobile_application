@@ -20,16 +20,18 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
     imageUrl: json['imageUrl'] as String,
     description: json['description'] as String,
     isFavorite: json['isFavorite'] as bool,
+    totalFavorite: json['totalFavorite'] as int,
   );
 }
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
-  'id': instance.id,
-  'category': instance.category,
-  'company': instance.company,
-  'name': instance.name,
-  'price': instance.price,
-  'imageUrl': instance.imageUrl,
-  'description': instance.description,
-  'isFavorite': instance.isFavorite,
-};
+      'id': instance.id,
+      'category': instance.category,
+      'company': instance.company,
+      'name': instance.name,
+      'price': instance.price,
+      'imageUrl': instance.imageUrl,
+      'description': instance.description,
+      'isFavorite': instance.isFavorite,
+      'totalFavorite': instance.totalFavorite,
+    };
