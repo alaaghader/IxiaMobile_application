@@ -37,6 +37,7 @@ dependencies:
   location: ^2.5.4
   flutter_polyline_points: ^0.1.0
   flutter_rating_bar: ^3.0.1+1
+  geolocator: ^5.1.5
   flutter:
     sdk: flutter
 

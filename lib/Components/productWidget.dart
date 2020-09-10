@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Api/Models/product.dart';
 import 'package:ixiamobile_application/Pages/Products/productDetail.dart';
 
-class ProductWidget extends StatelessWidget{
+class ProductWidget extends StatelessWidget {
   final Product product;
 
   const ProductWidget({Key key, this.product}) : super(key: key);
@@ -24,7 +24,9 @@ class ProductWidget extends StatelessWidget{
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProductDetails(product: product,),
+                  builder: (context) => ProductDetails(
+                    product: product,
+                  ),
                 ),
               );
             },
@@ -39,7 +41,7 @@ class ProductWidget extends StatelessWidget{
                       bottomLeft: Radius.circular(15.0),
                     ),
                     image: DecorationImage(
-                      image:AssetImage('res/images/myHoodie.png'),
+                      image: AssetImage('res/images/myHoodie.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -53,67 +55,51 @@ class ProductWidget extends StatelessWidget{
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
-                          product.name,
+                          product.name ?? "",
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: Theme.of(context)
                               .textTheme
                               .headline5
-                              .copyWith(height: 1.0),
+                              .copyWith(height: 2.0),
                         ),
-                        SizedBox(height: 8.0),
+                        SizedBox(height: 10.0),
                         Text(
                           product.company.name ?? "",
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 8.0),
-                        Expanded(
-                          child: Text(
-                            product.description ?? "",
-                            overflow: TextOverflow.fade,
-                            maxLines: 3,
+                          style: TextStyle(
+                            fontSize: 16.0,
                           ),
                         ),
-                        SizedBox(height: 4.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Icon(Icons.star, color: Colors.yellow, size: 18),
-                                    Icon(Icons.star, color: Colors.yellow, size: 18),
-                                    Icon(Icons.star, color: Colors.yellow, size: 18),
-                                    Icon(Icons.star, color: Colors.yellow, size: 18),
-                                    Icon(Icons.star,
-                                        color: Colors.yellow, size: 18),
-                                    SizedBox(width: 4.0),
-                                    Text(
-                                      '(234)',
-                                      style: TextStyle(
-                                        color: Colors.yellow,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: <Widget>[
-                                if (product.price == product.price)
-                                  Text(
-                                    '${product.price} \$',
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        decoration: TextDecoration.lineThrough),
+                        Padding(
+                          padding: EdgeInsets.only(top: 35.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
                                   ),
-                                Text('${product.price} \$'),
-                              ],
-                            ),
-                          ],
+                                  Text(
+                                    product.totalFavorite.toString(),
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                '${product.price} \$',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

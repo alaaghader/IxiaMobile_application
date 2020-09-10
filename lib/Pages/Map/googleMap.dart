@@ -1,33 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapsDemo extends StatefulWidget {
-  MapsDemo() : super();
-
   @override
   MapsDemoState createState() => MapsDemoState();
 }
 
 class MapsDemoState extends State<MapsDemo> {
   Completer<GoogleMapController> _controller = Completer();
-  static const LatLng _center = const LatLng(33.8652, 35.5623);
-  final Set<Marker> _markers = {};
-  LatLng _lastMapPosition = _center;
   MapType _currentMapType = MapType.normal;
+  static LatLng _center ;
+  LatLng _lastMapPosition = _center;
+  Position currentLocation;
+  Future<void> getCurrentPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentPosition = getUserLocation();
+  }
+
+  Future<Position> locateUser() async {
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return position;
+  }
+
+  getUserLocation() async {
+    currentLocation = await locateUser();
+    setState(() {
+      _center = LatLng(currentLocation.latitude, currentLocation.longitude);
+    });
+  }
 
   static final CameraPosition _position1 = CameraPosition(
     bearing: 192.833,
-    target: LatLng(33.8652, 35.5623),
+    target: LatLng(_center.latitude, _center.longitude),
     tilt: 59.440,
     zoom: 11.0,
   );
-
-  Future<void> _goToPosition1() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
-  }
 
   _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -37,105 +51,9 @@ class MapsDemoState extends State<MapsDemo> {
     _lastMapPosition = position.target;
   }
 
-  _onMapTypeButtonPressed() {
-    setState(() {
-      _currentMapType = _currentMapType == MapType.normal
-          ? MapType.satellite
-          : MapType.normal;
-    });
-  }
-
-  _onAddMarkerButtonPressed() {
-    setState(() {
-      _markers.add(
-        Marker(
-          markerId: MarkerId(_lastMapPosition.toString()),
-          position: _lastMapPosition,
-          infoWindow: InfoWindow(
-            title: 'This is a Title',
-            snippet: 'This is a snippet',
-          ),
-          icon: BitmapDescriptor.defaultMarker,
-        ),
-      );
-    });
-  }
-
-  Marker marker1 = Marker(
-    markerId: MarkerId('marker1'),
-    position: LatLng(33.8652, 35.5623),
-    infoWindow: InfoWindow(title: 'Zara'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-  );
-
-  Marker gramercyMarker = Marker(
-    markerId: MarkerId('gramercy'),
-    position: LatLng(40.738380, -73.988426),
-    infoWindow: InfoWindow(title: 'Gramercy Tavern'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueViolet,
-    ),
-  );
-
-  Marker bernardinMarker = Marker(
-    markerId: MarkerId('bernardin'),
-    position: LatLng(40.761421, -73.981667),
-    infoWindow: InfoWindow(title: 'Le Bernardin'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueViolet,
-    ),
-  );
-  Marker blueMarker = Marker(
-    markerId: MarkerId('bluehill'),
-    position: LatLng(40.732128, -73.999619),
-    infoWindow: InfoWindow(title: 'Blue Hill'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueViolet,
-    ),
-  );
-
-//New York Marker
-
-  Marker newyork1Marker = Marker(
-    markerId: MarkerId('newyork1'),
-    position: LatLng(40.742451, -74.005959),
-    infoWindow: InfoWindow(title: 'Los Tacos'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueViolet,
-    ),
-  );
-  Marker newyork2Marker = Marker(
-    markerId: MarkerId('newyork2'),
-    position: LatLng(40.729640, -73.983510),
-    infoWindow: InfoWindow(title: 'Tree Bistro'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueViolet,
-    ),
-  );
-  Marker newyork3Marker = Marker(
-    markerId: MarkerId('newyork3'),
-    position: LatLng(40.719109, -74.000183),
-    infoWindow: InfoWindow(title: 'Le Coucou'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueViolet,
-    ),
-  );
-  Widget button(Function function, IconData icon) {
-    return FloatingActionButton(
-      onPressed: function,
-      materialTapTargetSize: MaterialTapTargetSize.padded,
-      backgroundColor: Colors.red,
-      child: Icon(
-        icon,
-        size: 36.0,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
@@ -148,49 +66,29 @@ class MapsDemoState extends State<MapsDemo> {
           centerTitle: true,
           backgroundColor: Colors.red,
         ),
-        body: Stack(
-          children: <Widget>[
-            GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 11.0,
-              ),
-              mapType: _currentMapType,
-              markers: {
-                marker1,
-                newyork1Marker,
-                newyork2Marker,
-                newyork3Marker,
-                gramercyMarker,
-                bernardinMarker,
-                blueMarker
-              },
-              onCameraMove: _onCameraMove,
-            ),
-            _buildContainer(),
-            Padding(
-              padding: EdgeInsets.only(top: 160.0, right: 16.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Column(
-                  children: <Widget>[
-                    button(_onMapTypeButtonPressed, Icons.map),
-                    SizedBox(
-                      height: 16.0,
+        body: FutureBuilder(
+          future: getCurrentPosition,
+          builder: (context, snapshot){
+            if(snapshot.connectionState == ConnectionState.done){
+              return Stack(
+                children: <Widget>[
+                  GoogleMap(
+                    myLocationEnabled: true,
+                    onMapCreated: _onMapCreated,
+                    initialCameraPosition: CameraPosition(
+                      target: _center,
+                      zoom: 11.0,
                     ),
-                    button(_onAddMarkerButtonPressed, Icons.add_location),
-                    SizedBox(
-                      height: 16.0,
-                    ),
-                    button(_goToPosition1, Icons.location_searching),
-                  ],
-                ),
-              ),
-            ),
-          ],
+                    mapType: _currentMapType,
+                    onCameraMove: _onCameraMove,
+                  ),
+                  _buildContainer(),
+                ],
+              );
+            }
+            return Center(child: CircularProgressIndicator());
+          },
         ),
-      ),
     );
   }
 
@@ -283,89 +181,89 @@ class MapsDemoState extends State<MapsDemo> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
               child: Text(
-            restaurantName,
-            style: TextStyle(
-                color: Color(0xff6200ee),
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold),
-          )),
+                restaurantName,
+                style: TextStyle(
+                    color: Color(0xff6200ee),
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold),
+              )),
         ),
         SizedBox(height: 5.0),
         Container(
             child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-                child: Text(
-              "4.1",
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                    child: Text(
+                      "4.1",
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 18.0,
+                      ),
+                    )),
+                Container(
+                  child: Icon(
+                    FontAwesomeIcons.solidStar,
+                    color: Colors.amber,
+                    size: 15.0,
+                  ),
+                ),
+                Container(
+                  child: Icon(
+                    FontAwesomeIcons.solidStar,
+                    color: Colors.amber,
+                    size: 15.0,
+                  ),
+                ),
+                Container(
+                  child: Icon(
+                    FontAwesomeIcons.solidStar,
+                    color: Colors.amber,
+                    size: 15.0,
+                  ),
+                ),
+                Container(
+                  child: Icon(
+                    FontAwesomeIcons.solidStar,
+                    color: Colors.amber,
+                    size: 15.0,
+                  ),
+                ),
+                Container(
+                  child: Icon(
+                    FontAwesomeIcons.solidStarHalf,
+                    color: Colors.amber,
+                    size: 15.0,
+                  ),
+                ),
+                Container(
+                    child: Text(
+                      "(946)",
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 18.0,
+                      ),
+                    )),
+              ],
+            )),
+        SizedBox(height: 5.0),
+        Container(
+            child: Text(
+              "American \u00B7 \u0024\u0024 \u00B7 1.6 mi",
               style: TextStyle(
                 color: Colors.black54,
                 fontSize: 18.0,
               ),
             )),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-                child: Text(
-              "(946)",
+        SizedBox(height: 5.0),
+        Container(
+            child: Text(
+              "Closed \u00B7 Opens 17:00 Thu",
               style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
             )),
-          ],
-        )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-          "American \u00B7 \u0024\u0024 \u00B7 1.6 mi",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
-          ),
-        )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-          "Closed \u00B7 Opens 17:00 Thu",
-          style: TextStyle(
-              color: Colors.black54,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold),
-        )),
       ],
     );
   }
