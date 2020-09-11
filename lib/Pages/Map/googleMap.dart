@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ixiamobile_application/Api/Models/company.dart';
+import 'package:ixiamobile_application/Api/Requests/company.dart';
 
 class MapsDemo extends StatefulWidget {
   @override
@@ -12,15 +13,42 @@ class MapsDemo extends StatefulWidget {
 class MapsDemoState extends State<MapsDemo> {
   Completer<GoogleMapController> _controller = Completer();
   MapType _currentMapType = MapType.normal;
-  static LatLng _center ;
+  static LatLng _center;
   LatLng _lastMapPosition = _center;
   Position currentLocation;
   Future<void> getCurrentPosition;
+  final Set<Marker> _markers = {};
+  final companyApi = CompanyApi();
+  Future<List<Company>> companies;
+  List<Company> companiesLocation;
 
   @override
   void initState() {
     super.initState();
     getCurrentPosition = getUserLocation();
+  }
+
+  Future<List<Company>> locateCompanies() async {
+    List<Company> companies = await companyApi.getCompaniesAsync();
+    return companies;
+  }
+
+  getCompaniesLocation() async {
+    companiesLocation = await locateCompanies();
+    setState(() {
+      for (int i = 0; i < companiesLocation.length; i++) {
+        setState(() {
+          _markers.add(
+            Marker(
+              markerId: MarkerId(companiesLocation[i].name),
+              position:
+                  LatLng(companiesLocation[i].lat, companiesLocation[i].lon),
+              infoWindow: InfoWindow(title: companiesLocation[i].name),
+            ),
+          );
+        });
+      }
+    });
   }
 
   Future<Position> locateUser() async {
@@ -30,18 +58,20 @@ class MapsDemoState extends State<MapsDemo> {
   }
 
   getUserLocation() async {
+    await getCompaniesLocation();
     currentLocation = await locateUser();
     setState(() {
       _center = LatLng(currentLocation.latitude, currentLocation.longitude);
     });
+    List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(
+        _center.latitude.toString().length > 9
+            ? double.parse(_center.latitude.toString().substring(0, 8))
+            : _center.latitude,
+        _center.longitude.toString().length > 9
+            ? double.parse(_center.longitude.toString().substring(0, 8))
+            : _center.longitude);
+    print(placemark[0].country);
   }
-
-  static final CameraPosition _position1 = CameraPosition(
-    bearing: 192.833,
-    target: LatLng(_center.latitude, _center.longitude),
-    tilt: 59.440,
-    zoom: 11.0,
-  );
 
   _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -54,217 +84,88 @@ class MapsDemoState extends State<MapsDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Ixia',
-            style: TextStyle(
-              fontSize: 25,
-              fontFamily: 'Montserrat',
-            ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Ixia',
+          style: TextStyle(
+            fontSize: 25,
+            fontFamily: 'Montserrat',
           ),
-          centerTitle: true,
-          backgroundColor: Colors.red,
         ),
-        body: FutureBuilder(
-          future: getCurrentPosition,
-          builder: (context, snapshot){
-            if(snapshot.connectionState == ConnectionState.done){
-              return Stack(
-                children: <Widget>[
-                  GoogleMap(
-                    myLocationEnabled: true,
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                      target: _center,
-                      zoom: 11.0,
-                    ),
-                    mapType: _currentMapType,
-                    onCameraMove: _onCameraMove,
-                  ),
-                  _buildContainer(),
-                ],
-              );
-            }
-            return Center(child: CircularProgressIndicator());
-          },
-        ),
-    );
-  }
-
-  Widget _buildContainer() {
-    return Align(
-      alignment: Alignment.topRight,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 50.0),
-        height: 150.0,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            SizedBox(width: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipO3VPL9m-b355xWeg4MXmOQTauFAEkavSluTtJU=w225-h160-k-no",
-                  40.738380,
-                  -73.988426,
-                  "Gramercy Tavern"),
-            ),
-            SizedBox(width: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipMKRN-1zTYMUVPrH-CcKzfTo6Nai7wdL7D8PMkt=w340-h160-k-no",
-                  40.761421,
-                  -73.981667,
-                  "Le Bernardin"),
-            ),
-            SizedBox(width: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _boxes(
-                  "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-                  40.732128,
-                  -73.999619,
-                  "Blue Hill"),
-            ),
-          ],
-        ),
+        centerTitle: true,
+        backgroundColor: Colors.red,
       ),
-    );
-  }
-
-  Widget _boxes(String _image, double lat, double long, String restaurantName) {
-    return GestureDetector(
-      onTap: () {
-        _gotoLocation(lat, long);
-      },
-      child: Container(
-        child: new FittedBox(
-          child: Material(
-              color: Colors.white,
-              elevation: 14.0,
-              borderRadius: BorderRadius.circular(24.0),
-              shadowColor: Color(0x802196F3),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: 180,
-                    height: 200,
-                    child: ClipRRect(
-                      borderRadius: new BorderRadius.circular(24.0),
-                      child: Image(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(_image),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: myDetailsContainer1(restaurantName),
-                    ),
-                  ),
-                ],
-              )),
-        ),
-      ),
-    );
-  }
-
-  Widget myDetailsContainer1(String restaurantName) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Container(
-              child: Text(
-                restaurantName,
-                style: TextStyle(
-                    color: Color(0xff6200ee),
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold),
-              )),
-        ),
-        SizedBox(height: 5.0),
-        Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: FutureBuilder(
+        future: getCurrentPosition,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Stack(
               children: <Widget>[
-                Container(
-                    child: Text(
-                      "4.1",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 18.0,
-                      ),
-                    )),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
+                GoogleMap(
+                  markers: _markers,
+                  myLocationEnabled: true,
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 11.0,
+                  ),
+                  mapType: _currentMapType,
+                  onCameraMove: _onCameraMove,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 60.0, vertical: 10.0),
+                    height: 100.0,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: companiesLocation
+                          .map((e) => Container(
+                                child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: GestureDetector(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Container(
+                                            width: 50,
+                                            height: 90,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      24.0),
+                                              child: Image(
+                                                fit: BoxFit.fill,
+                                                image: NetworkImage(
+                                                    "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsets.all(15.0),
+                                            width: 50,
+                                            height: 90,
+                                            child: Text(e.name),
+                                          ),
+                                        ],
+                                      ),
+                                      onTap: () {
+                                        _gotoLocation(e.lat, e.lon);
+                                      },
+                                    )),
+                              ))
+                          .toList(),
+                    ),
                   ),
                 ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStarHalf,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                    child: Text(
-                      "(946)",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 18.0,
-                      ),
-                    )),
               ],
-            )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-              "American \u00B7 \u0024\u0024 \u00B7 1.6 mi",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-              "Closed \u00B7 Opens 17:00 Thu",
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold),
-            )),
-      ],
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 

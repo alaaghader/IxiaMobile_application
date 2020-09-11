@@ -16,6 +16,6 @@ Result<T> _$ResultFromJson<T>(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ResultToJson<T>(Result<T> instance) => <String, dynamic>{
-  'status': instance.status,
-  'errors': instance.errors,
-};
+      'status': instance.status,
+      'errors': instance.errors,
+    };

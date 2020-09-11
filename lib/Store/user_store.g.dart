@@ -13,7 +13,7 @@ mixin _$UserStore on _UserStore, Store {
 
   @override
   bool get isLoggedIn => (_$isLoggedInComputed ??=
-      Computed<bool>(() => super.isLoggedIn, name: '_UserStore.isLoggedIn'))
+          Computed<bool>(() => super.isLoggedIn, name: '_UserStore.isLoggedIn'))
       .value;
 
   final _$tokenViewAtom = Atom(name: '_UserStore.tokenView');
@@ -89,7 +89,7 @@ mixin _$UserStore on _UserStore, Store {
   Future<TokenView> signUp(String firstName, String lastName, String userName,
       String email, String password) {
     return _$signUpAsyncAction.run(
-            () => super.signUp(firstName, lastName, userName, email, password));
+        () => super.signUp(firstName, lastName, userName, email, password));
   }
 
   final _$loadProfileAsyncAction = AsyncAction('_UserStore.loadProfile');
@@ -116,10 +116,10 @@ mixin _$UserStore on _UserStore, Store {
   final _$updateProfileAsyncAction = AsyncAction('_UserStore.updateProfile');
 
   @override
-  Future<User> updateProfile(String firstName, String middleName,
-      String lastName, String address) {
-    return _$updateProfileAsyncAction.run(() => super.updateProfile(
-         firstName, middleName, lastName, address));
+  Future<User> updateProfile(
+      String firstName, String middleName, String lastName, String address) {
+    return _$updateProfileAsyncAction.run(
+        () => super.updateProfile(firstName, middleName, lastName, address));
   }
 
   @override

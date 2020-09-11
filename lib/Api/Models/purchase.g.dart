@@ -22,8 +22,8 @@ Purchase _$PurchaseFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$PurchaseToJson(Purchase instance) => <String, dynamic>{
-  'user': instance.user,
-  'product': instance.product,
-  'purchaseTime': instance.purchaseTime?.toIso8601String(),
-  'comments': instance.comments,
-};
+      'user': instance.user,
+      'product': instance.product,
+      'purchaseTime': instance.purchaseTime?.toIso8601String(),
+      'comments': instance.comments,
+    };

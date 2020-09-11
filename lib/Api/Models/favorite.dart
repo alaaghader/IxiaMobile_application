@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'favorite.g.dart';
 
 @JsonSerializable()
-class Favorite{
+class Favorite {
   User user;
   Product product;
   DateTime favoriteTime;

@@ -1,6 +1,8 @@
+import 'package:ixiamobile_application/Api/Models/company.dart';
 import 'package:ixiamobile_application/Api/Models/token_view.dart';
 import 'package:ixiamobile_application/Api/Models/user.dart';
 import 'package:ixiamobile_application/Api/Requests/account.dart';
+import 'package:ixiamobile_application/Api/Requests/company.dart';
 import 'package:ixiamobile_application/Api/Requests/profile.dart';
 import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/utils/extensions.dart';
@@ -8,11 +10,9 @@ import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 part 'user_store.g.dart';
 
-class UserStore extends _UserStore with _$UserStore {
-}
+class UserStore extends _UserStore with _$UserStore {}
 
 abstract class _UserStore with Store {
-
   @observable
   TokenView tokenView;
 
@@ -42,22 +42,12 @@ abstract class _UserStore with Store {
   }
 
   @action
-  Future<TokenView> signUp(
-      String firstName,
-      String lastName,
-      String userName,
-      String email,
-      String password
-      ) async {
+  Future<TokenView> signUp(String firstName, String lastName, String userName,
+      String email, String password) async {
     loading = true;
     try {
       tokenView = await AccountApi.signUp(
-        firstName,
-        lastName,
-        userName,
-        email,
-        password
-      );
+          firstName, lastName, userName, email, password);
       var sharedPrefs = await SharedPreferences.getInstance();
       sharedPrefs.setToken(tokenView);
     } finally {
@@ -67,14 +57,10 @@ abstract class _UserStore with Store {
   }
 
   @action
-  Future<TokenView> facebookLogin(
-      String email
-      ) async {
+  Future<TokenView> facebookLogin(String email) async {
     loading = true;
     try {
-      tokenView = await AccountApi.facebookLogin(
-          email
-      );
+      tokenView = await AccountApi.facebookLogin(email);
       var sharedPrefs = await SharedPreferences.getInstance();
       sharedPrefs.setToken(tokenView);
     } finally {
@@ -84,14 +70,10 @@ abstract class _UserStore with Store {
   }
 
   @action
-  Future<TokenView> googleLogin(
-      String email
-      ) async {
+  Future<TokenView> googleLogin(String email) async {
     loading = true;
     try {
-      tokenView = await AccountApi.googleLogin(
-          email
-      );
+      tokenView = await AccountApi.googleLogin(email);
       var sharedPrefs = await SharedPreferences.getInstance();
       sharedPrefs.setToken(tokenView);
     } finally {
@@ -146,14 +128,12 @@ abstract class _UserStore with Store {
   }
 
   @action
-  Future<User> updateProfile(
-      String firstName,
-      String middleName,
-      String lastName,
-      String address) async {
+  Future<User> updateProfile(String firstName, String middleName,
+      String lastName, String address) async {
     loading = true;
     try {
-      this.profile = await ProfileApi.updateProfileAsync(firstName,middleName,lastName,address);
+      this.profile = await ProfileApi.updateProfileAsync(
+          firstName, middleName, lastName, address);
     } finally {
       loading = false;
     }

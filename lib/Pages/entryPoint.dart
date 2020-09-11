@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ixiamobile_application/Failures/failure.dart';
 import 'package:ixiamobile_application/Pages/start.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';

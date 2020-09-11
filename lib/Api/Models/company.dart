@@ -1,4 +1,3 @@
-import 'package:ixiamobile_application/Api/Models/product.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'company.g.dart';
