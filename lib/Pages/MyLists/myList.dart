@@ -65,7 +65,7 @@ class MyListState extends State<MyList> {
                             children: snapshot.data
                                 .map(
                                   (e) => ProductWidget(
-                                    product: e.product,
+                                    price: e.price,
                                   ),
                                 )
                                 .toList(),
@@ -97,7 +97,7 @@ class MyListState extends State<MyList> {
                             children: snapshot.data
                                 .map(
                                   (e) => ProductWidget(
-                                    product: e.product,
+                                    price: e.price,
                                   ),
                                 )
                                 .toList(),

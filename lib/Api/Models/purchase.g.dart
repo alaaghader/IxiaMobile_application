@@ -11,9 +11,9 @@ Purchase _$PurchaseFromJson(Map<String, dynamic> json) {
     user: json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
-    product: json['product'] == null
+    price: json['price'] == null
         ? null
-        : Product.fromJson(json['product'] as Map<String, dynamic>),
+        : Price.fromJson(json['price'] as Map<String, dynamic>),
     purchaseTime: json['purchaseTime'] == null
         ? null
         : DateTime.parse(json['purchaseTime'] as String),
@@ -23,7 +23,7 @@ Purchase _$PurchaseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PurchaseToJson(Purchase instance) => <String, dynamic>{
       'user': instance.user,
-      'product': instance.product,
+      'product': instance.price,
       'purchaseTime': instance.purchaseTime?.toIso8601String(),
       'comments': instance.comments,
     };

@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ixiamobile_application/Api/Models/product.dart';
+import 'package:ixiamobile_application/Api/Models/price.dart';
 import 'package:ixiamobile_application/Pages/Products/productDetail.dart';
 
 class ProductWidget extends StatelessWidget {
-  final Product product;
+  final Price price;
 
-  const ProductWidget({Key key, this.product}) : super(key: key);
+  const ProductWidget({Key key, this.price}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,7 @@ class ProductWidget extends StatelessWidget {
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProductDetails(
-                    product: product,
-                  ),
+                  builder: (context) => ProductDetails(price: price),
                 ),
               );
             },
@@ -55,7 +53,7 @@ class ProductWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
-                          product.name ?? "",
+                          price.product.name ?? "",
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: Theme.of(context)
@@ -65,7 +63,7 @@ class ProductWidget extends StatelessWidget {
                         ),
                         SizedBox(height: 10.0),
                         Text(
-                          product.company.name ?? "",
+                          price.product.company.name ?? "",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 16.0,
@@ -83,7 +81,7 @@ class ProductWidget extends StatelessWidget {
                                     color: Colors.red,
                                   ),
                                   Text(
-                                    product.totalFavorite.toString(),
+                                    price.product.totalFavorite.toString(),
                                     style: TextStyle(
                                       fontSize: 15.0,
                                     ),
@@ -91,7 +89,7 @@ class ProductWidget extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                '${product.price} \$',
+                                '${price.priceNumber} \$',
                                 style: TextStyle(
                                   color: Colors.red,
                                   fontSize: 18.0,

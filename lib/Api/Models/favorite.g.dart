@@ -11,9 +11,9 @@ Favorite _$FavoriteFromJson(Map<String, dynamic> json) {
     user: json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
-    product: json['product'] == null
+    price: json['price'] == null
         ? null
-        : Product.fromJson(json['product'] as Map<String, dynamic>),
+        : Price.fromJson(json['price'] as Map<String, dynamic>),
     favoriteTime: json['favoriteTime'] == null
         ? null
         : DateTime.parse(json['favoriteTime'] as String),
@@ -22,6 +22,6 @@ Favorite _$FavoriteFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$FavoriteToJson(Favorite instance) => <String, dynamic>{
       'user': instance.user,
-      'product': instance.product,
+      'product': instance.price,
       'favoriteTime': instance.favoriteTime?.toIso8601String(),
     };

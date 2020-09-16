@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ixiamobile_application/Api/Models/product.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ixiamobile_application/Api/Models/price.dart';
+import 'package:ixiamobile_application/Api/Requests/price.dart';
 import 'package:ixiamobile_application/Components/homePageProductWidget.dart';
-import 'package:ixiamobile_application/Api/Requests/product.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -10,13 +12,40 @@ class Products extends StatefulWidget {
 }
 
 class ProductsState extends State<Products> {
-  Future<List<Product>> products;
-  ProductApi _productApi = ProductApi();
+  Future<List<Price>> pricesFuture;
+  PriceApi _productApi = PriceApi();
+  Position currentLocation;
+  static LatLng _center;
+  Future<void> getCurrentPosition;
+  List<Placemark> placemark;
 
   @override
   void initState() {
-    products = _productApi.getAllProductAsync();
+    getUserLocation();
     super.initState();
+  }
+
+  Future<Position> locateUser() async {
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return position;
+  }
+
+  getUserLocation() async {
+    currentLocation = await locateUser();
+    setState(() {
+      _center = LatLng(currentLocation.latitude, currentLocation.longitude);
+    });
+    placemark = await Geolocator().placemarkFromCoordinates(
+        _center.latitude.toString().length > 9
+            ? double.parse(_center.latitude.toString().substring(0, 8))
+            : _center.latitude,
+        _center.longitude.toString().length > 9
+            ? double.parse(_center.longitude.toString().substring(0, 8))
+            : _center.longitude);
+    setState(() {
+      pricesFuture = _productApi.getPriceAsync(placemark[0].country);
+    });
   }
 
   @override
@@ -34,8 +63,8 @@ class ProductsState extends State<Products> {
         centerTitle: true,
         backgroundColor: Colors.red,
       ),
-      body: FutureBuilder<List<Product>>(
-        future: products,
+      body: FutureBuilder<List<Price>>(
+        future: pricesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.data.length != 0) {
@@ -46,7 +75,7 @@ class ProductsState extends State<Products> {
                   ),
                   children: snapshot.data
                       .map((e) => HomePageProductWidget(
-                            product: e,
+                            price: e,
                           ))
                       .toList());
             } else {
