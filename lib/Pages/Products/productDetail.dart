@@ -17,7 +17,6 @@ class ProductDetails extends StatefulWidget {
 }
 
 class ProductDetailsState extends State<ProductDetails> {
-  bool pressed = false;
   final favoriteApi = FavoriteApi();
   final purchaseApi = PurchaseApi();
   String comments;
@@ -29,6 +28,7 @@ class ProductDetailsState extends State<ProductDetails> {
 
   @override
   Widget build(BuildContext context) {
+    bool pressed = widget.price.product.isFavorite;
     var userStore = Provider.of<UserStore>(context);
     return Scaffold(
       appBar: AppBar(

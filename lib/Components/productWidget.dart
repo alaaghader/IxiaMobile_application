@@ -89,7 +89,7 @@ class ProductWidget extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                '${price.priceNumber} \$',
+                                '${price.priceNumber} ${price.currency.currencyName}',
                                 style: TextStyle(
                                   color: Colors.red,
                                   fontSize: 18.0,

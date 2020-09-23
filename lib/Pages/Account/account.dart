@@ -9,13 +9,14 @@ import 'package:provider/provider.dart';
 import 'editAccount.dart';
 
 class Account extends StatelessWidget {
-  String typeName(String firstName, String lastName){
-    if(firstName == null || lastName == null){
+  String typeName(String firstName, String lastName) {
+    if (firstName == null || lastName == null) {
       return 'ixia user'.toUpperCase();
-    }else{
-      return firstName.toUpperCase()  + " " + lastName.toUpperCase();
+    } else {
+      return firstName.toUpperCase() + " " + lastName.toUpperCase();
     }
   }
+
   Widget _buildSettingsList(BuildContext context, UserStore userStore) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,8 +51,7 @@ class Account extends StatelessWidget {
             title: Text('Help'),
             subtitle: Text('FAQ, contact us, privacy policy'),
             trailing: Icon(Icons.navigate_next),
-            onTap: () {
-            },
+            onTap: () {},
           ),
         ),
         SeparatorListItem(
@@ -64,9 +64,9 @@ class Account extends StatelessWidget {
             title: Text('Logout'),
             subtitle: userStore.isLoggedIn && userStore.profile != null
                 ? Text(
-              "Logged in as ${userStore.profile.email}",
-              style: TextStyle(color: Colors.grey),
-            )
+                    "Logged in as ${userStore.profile.email}",
+                    style: TextStyle(color: Colors.grey),
+                  )
                 : Text('Sign out of this device'),
             trailing: Icon(Icons.navigate_next),
             onTap: () {
@@ -124,15 +124,15 @@ class Account extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: Observer(
-        builder: (context){
+        builder: (context) {
           var userStore = Provider.of<UserStore>(context);
           var profileFuture = userStore.profile != null || !userStore.isLoggedIn
               ? Future.value(userStore.profile)
               : userStore.loadProfile();
           return FutureBuilder<User>(
             future: profileFuture,
-            builder: (context, snapshot){
-              if(userStore.isLoggedIn){
+            builder: (context, snapshot) {
+              if (userStore.isLoggedIn) {
                 return ListView(
                   children: <Widget>[
                     SizedBox(height: 4),
@@ -140,17 +140,31 @@ class Account extends StatelessWidget {
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
                         children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('res/images/unknown.jpg'),
-                                fit: BoxFit.fill,
-                              ),
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            width: 100.0,
-                            height: 100.0,
-                          ),
+                          userStore.profile.profilePicture == null
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image:
+                                          AssetImage('res/images/unknown.jpg'),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  width: 100.0,
+                                  height: 100.0,
+                                )
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: new NetworkImage(
+                                          'http://alaaghader-001-site1.gtempurl.com/api/Profile/get/${userStore.profile.profilePicture}'),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  width: 100.0,
+                                  height: 100.0,
+                                ),
                           SizedBox(width: 16.0),
                           Flexible(
                             child: Row(
@@ -158,12 +172,13 @@ class Account extends StatelessWidget {
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        typeName(userStore.profile.firstName, userStore.profile.lastName),
+                                        typeName(userStore.profile.firstName,
+                                            userStore.profile.lastName),
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5,
@@ -182,8 +197,7 @@ class Account extends StatelessWidget {
                     _buildSettingsList(context, userStore),
                   ],
                 );
-              }
-              else{
+              } else {
                 return Center(
                   child: FlatButton.icon(
                     onPressed: () {

@@ -123,6 +123,12 @@ mixin _$UserStore on _UserStore, Store {
   }
 
   @override
+  Future<User> updateProfilePicture(File profileImage) {
+    return _$updateProfileAsyncAction
+        .run(() => super.updateProfilePicture(profileImage));
+  }
+
+  @override
   String toString() {
     return '''
 tokenView: ${tokenView},

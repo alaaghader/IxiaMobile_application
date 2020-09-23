@@ -12,6 +12,7 @@ class User {
   String address;
   String token;
   String email;
+  String profilePicture;
 
   User({
     this.id,
@@ -22,6 +23,7 @@ class User {
     this.address,
     this.token,
     this.email,
+    this.profilePicture,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

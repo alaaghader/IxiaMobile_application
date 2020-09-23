@@ -75,8 +75,6 @@ class SearchState extends State<Search> {
                       });
                       pricesFuture = _productApi.searchPriceAsync(
                           placemark[0].country, name);
-                      print(placemark[0].country);
-                      print(name);
                     },
                     textInputAction: TextInputAction.go,
                     decoration: InputDecoration(

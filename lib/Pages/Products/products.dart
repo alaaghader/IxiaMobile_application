@@ -79,7 +79,12 @@ class ProductsState extends State<Products> {
                           ))
                       .toList());
             } else {
-              return Text('No products found');
+              return Center(
+                child: Text(
+                  'No products found',
+                  style: TextStyle(fontSize: 25.0),
+                ),
+              );
             }
           } else if (snapshot.hasError) {
             return Text(snapshot.error);

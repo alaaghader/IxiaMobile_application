@@ -1,21 +1,29 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ixiamobile_application/Api/Models/user.dart';
 import 'package:intl/intl.dart';
 import 'package:ixiamobile_application/Failures/failure.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
 
-class EditAccount extends StatefulWidget{
+class EditAccount extends StatefulWidget {
   @override
   EditAccountState createState() => EditAccountState();
 }
 
-class EditAccountState extends State<EditAccount> with SingleTickerProviderStateMixin{
+class EditAccountState extends State<EditAccount>
+    with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
   final _birthDateController = TextEditingController();
+  Future<File> file;
+  String base64Image;
+  File tmpFile;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +61,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
               _birthDateController.value = TextEditingValue(
                 text: _formatDate(profile.birthDate),
               );
-              return _editAccountWidget(profile, userStore ,context);
+              return _editAccountWidget(profile, userStore, context);
             },
           );
         },
@@ -90,7 +98,13 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                       _status = !_status;
                       FocusScope.of(context).requestFocus(new FocusNode());
                       try {
-                        store.updateProfile(user.firstName, user.middleName, user.lastName, user.address);
+                        if (tmpFile == null) {
+                          tmpFile = new File.fromUri(Uri.http(
+                              'http://alaaghader-001-site1.gtempurl.com/api/Profile/get/${store.profile.profilePicture}',
+                              ""));
+                        }
+                        store.updateProfile(user.firstName, user.middleName,
+                            user.lastName, user.address);
                         Navigator.pop(context);
                       } on Failure catch (e) {
                         Scaffold.of(context).showSnackBar(e.toSnackBar());
@@ -129,6 +143,82 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
     );
   }
 
+  Widget showImage(UserStore store) {
+    return FutureBuilder<File>(
+      future: file,
+      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            null != snapshot.data) {
+          tmpFile = snapshot.data;
+          print(tmpFile);
+          store.updateProfilePicture(tmpFile);
+          return GestureDetector(
+            child: new Container(
+              width: 140.0,
+              height: 140.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                image: new DecorationImage(
+                  image: new FileImage(snapshot.data),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                file = ImagePicker.pickImage(source: ImageSource.gallery);
+              });
+            },
+          );
+        } else if (null != snapshot.error) {
+          return const Text(
+            'Error Picking Image',
+            textAlign: TextAlign.center,
+          );
+        } else if (store.profile.profilePicture != null) {
+          return GestureDetector(
+            child: new Container(
+              width: 140.0,
+              height: 140.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                image: new DecorationImage(
+                  image: new NetworkImage(
+                      'http://alaaghader-001-site1.gtempurl.com/api/Profile/get/${store.profile.profilePicture}'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                file = ImagePicker.pickImage(source: ImageSource.gallery);
+              });
+            },
+          );
+        } else {
+          return GestureDetector(
+            child: new Container(
+              width: 140.0,
+              height: 140.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                image: new DecorationImage(
+                  image: AssetImage('res/images/unknown.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                file = ImagePicker.pickImage(source: ImageSource.gallery);
+              });
+            },
+          );
+        }
+      },
+    );
+  }
+
   Widget _editAccountWidget(User user, UserStore store, BuildContext context) {
     return new Container(
       color: Colors.white,
@@ -137,7 +227,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
           Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 20.0) ,
+                padding: EdgeInsets.only(top: 20.0),
                 child: new Stack(
                   fit: StackFit.loose,
                   children: <Widget>[
@@ -145,19 +235,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Container(
-                          width: 140.0,
-                          height: 140.0,
-                          decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                              image: new AssetImage(
-                                  'res/images/unknown.jpg'
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
+                        showImage(store),
                       ],
                     ),
                     Padding(
@@ -190,7 +268,8 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    padding:
+                        EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.max,
@@ -212,16 +291,15 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            _status ?
-                            _getEditIcon() :
-                            new Container(),
+                            _status ? _getEditIcon() : new Container(),
                           ],
                         ),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    padding:
+                        EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -242,7 +320,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -261,7 +339,8 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    padding:
+                        EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -282,7 +361,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -301,7 +380,8 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    padding:
+                        EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -322,7 +402,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -341,7 +421,8 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    padding:
+                        EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -362,7 +443,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -381,7 +462,8 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                    padding:
+                        EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -402,7 +484,7 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 2.0),
+                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                     child: new Row(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
@@ -424,9 +506,9 @@ class EditAccountState extends State<EditAccount> with SingleTickerProviderState
                       ],
                     ),
                   ),
-                  !_status ?
-                  _getActionButtons(user, store, context) :
-                  new Container(),
+                  !_status
+                      ? _getActionButtons(user, store, context)
+                      : new Container(),
                 ],
               ),
             ),

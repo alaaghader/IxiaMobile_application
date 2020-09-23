@@ -1,8 +1,7 @@
-import 'package:ixiamobile_application/Api/Models/company.dart';
+import 'dart:io';
 import 'package:ixiamobile_application/Api/Models/token_view.dart';
 import 'package:ixiamobile_application/Api/Models/user.dart';
 import 'package:ixiamobile_application/Api/Requests/account.dart';
-import 'package:ixiamobile_application/Api/Requests/company.dart';
 import 'package:ixiamobile_application/Api/Requests/profile.dart';
 import 'package:ixiamobile_application/Failures/status_failure.dart';
 import 'package:ixiamobile_application/utils/extensions.dart';
@@ -134,6 +133,17 @@ abstract class _UserStore with Store {
     try {
       this.profile = await ProfileApi.updateProfileAsync(
           firstName, middleName, lastName, address);
+    } finally {
+      loading = false;
+    }
+    return profile;
+  }
+
+  @action
+  Future<User> updateProfilePicture(File profileImage) async {
+    loading = true;
+    try {
+      this.profile = await ProfileApi.updateProfilePictureAsync(profileImage);
     } finally {
       loading = false;
     }
