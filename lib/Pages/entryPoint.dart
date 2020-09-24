@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ixiamobile_application/Failures/failure.dart';
+import 'package:ixiamobile_application/Pages/loader.dart';
 import 'package:ixiamobile_application/Pages/start.dart';
 import 'package:ixiamobile_application/Store/user_store.dart';
 import 'package:provider/provider.dart';
@@ -73,7 +74,7 @@ class _EntryPointState extends State<EntryPoint> {
                 });
               }
             }
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Loader());
           },
         ),
       ),

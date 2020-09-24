@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ixiamobile_application/Api/Models/price.dart';
 import 'package:ixiamobile_application/Api/Requests/price.dart';
 import 'package:ixiamobile_application/Components/homePageProductWidget.dart';
+import 'package:ixiamobile_application/Pages/loader.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -90,7 +91,7 @@ class ProductsState extends State<Products> {
             return Text(snapshot.error);
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: Loader(),
           );
         },
       ),
