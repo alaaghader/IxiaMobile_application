@@ -1,5 +1,5 @@
-import 'package:ixiamobile_application/Api/Models/category.dart';
 import 'package:ixiamobile_application/Api/Models/company.dart';
+import 'package:ixiamobile_application/Api/Models/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'product.g.dart';
@@ -7,7 +7,7 @@ part 'product.g.dart';
 @JsonSerializable()
 class Product {
   int id;
-  Category category;
+  Type type;
   Company company;
   String name;
   double price;
@@ -18,7 +18,7 @@ class Product {
 
   Product({
     this.id,
-    this.category,
+    this.type,
     this.company,
     this.name,
     this.price,
