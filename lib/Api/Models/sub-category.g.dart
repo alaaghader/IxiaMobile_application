@@ -13,6 +13,7 @@ Sub_Category _$Sub_CategoryFromJson(Map<String, dynamic> json) {
     category: json['category'] == null
         ? null
         : Category.fromJson(json['category'] as Map<String, dynamic>),
+    photoUrl: json['photoUrl'] as String,
   );
 }
 
@@ -21,4 +22,5 @@ Map<String, dynamic> _$Sub_CategoryToJson(Sub_Category instance) =>
       'id': instance.id,
       'name': instance.name,
       'category': instance.category,
+      'photoUrl': instance.photoUrl,
     };

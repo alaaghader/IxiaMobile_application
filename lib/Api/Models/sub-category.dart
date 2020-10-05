@@ -8,8 +8,9 @@ class Sub_Category {
   int id;
   String name;
   Category category;
+  String photoUrl;
 
-  Sub_Category({this.id, this.name, this.category});
+  Sub_Category({this.id, this.name, this.category, this.photoUrl});
 
   factory Sub_Category.fromJson(Map<String, dynamic> json) =>
       _$Sub_CategoryFromJson(json);

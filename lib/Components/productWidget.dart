@@ -39,7 +39,8 @@ class ProductWidget extends StatelessWidget {
                       bottomLeft: Radius.circular(15.0),
                     ),
                     image: DecorationImage(
-                      image: AssetImage('res/images/myHoodie.png'),
+                      image: new NetworkImage(
+                          'http://alaaghader-001-site1.gtempurl.com/api/Profile/get/${price.product.imageUrl}'),
                       fit: BoxFit.cover,
                     ),
                   ),
