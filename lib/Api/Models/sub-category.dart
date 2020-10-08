@@ -9,8 +9,10 @@ class Sub_Category {
   String name;
   Category category;
   String photoUrl;
+  bool tapped;
 
-  Sub_Category({this.id, this.name, this.category, this.photoUrl});
+  Sub_Category(
+      {this.id, this.name, this.category, this.photoUrl, this.tapped = false});
 
   factory Sub_Category.fromJson(Map<String, dynamic> json) =>
       _$Sub_CategoryFromJson(json);

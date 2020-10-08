@@ -19,4 +19,19 @@ class SubCategoryApi {
       throw InternetFailure(message: error.message);
     }
   }
+
+  Future<List<Sub_Category>> getAllSubCategoriesAsync() async {
+    try {
+      var response = await dio.get('api/SubCategory/getAllSubCategories');
+
+      if (response.statusCode >= 400) {
+        throw StatusFailure.fromResponse(response);
+      }
+
+      Iterable mapList = response.data['payload'];
+      return mapList.map((e) => Sub_Category.fromJson(e)).toList();
+    } on DioError catch (error) {
+      throw InternetFailure(message: error.message);
+    }
+  }
 }

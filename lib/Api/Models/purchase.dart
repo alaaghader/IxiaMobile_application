@@ -11,8 +11,9 @@ class Purchase {
   Price price;
   DateTime purchaseTime;
   String comments;
+  int quantity;
 
-  Purchase({this.user, this.price, this.purchaseTime, this.comments});
+  Purchase({this.user, this.price, this.purchaseTime, this.comments, this.quantity});
 
   factory Purchase.fromJson(Map<String, dynamic> json) =>
       _$PurchaseFromJson(json);

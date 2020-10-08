@@ -20,11 +20,11 @@ class ProductWidget extends StatelessWidget {
         child: Container(
           height: 160.0,
           child: InkWell(
-            onTap: () async {
-              await Navigator.push(
+            onTap: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProductDetails(price: price),
+                  builder: (context) => ProductDetails(price: this.price),
                 ),
               );
             },

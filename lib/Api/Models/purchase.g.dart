@@ -18,6 +18,7 @@ Purchase _$PurchaseFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['purchaseTime'] as String),
     comments: json['comments'] as String,
+    quantity: json['quantity'] as int,
   );
 }
 
@@ -26,4 +27,5 @@ Map<String, dynamic> _$PurchaseToJson(Purchase instance) => <String, dynamic>{
       'product': instance.price,
       'purchaseTime': instance.purchaseTime?.toIso8601String(),
       'comments': instance.comments,
+      'quantity': instance.quantity,
     };

@@ -129,17 +129,12 @@ class MapsDemoState extends State<MapsDemo> {
                                       child: Row(
                                         children: <Widget>[
                                           Container(
-                                            width: 50,
-                                            height: 90,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      24.0),
-                                              child: Image(
-                                                fit: BoxFit.fill,
-                                                image: NetworkImage(
-                                                    "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"),
-                                              ),
+                                            width: 70,
+                                            height: 60,
+                                            child: Image(
+                                              fit: BoxFit.fill,
+                                              image: new NetworkImage(
+                                                  'http://alaaghader-001-site1.gtempurl.com/api/Profile/get/${e.photoUrl}'),
                                             ),
                                           ),
                                           Container(
