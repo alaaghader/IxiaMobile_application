@@ -1,5 +1,4 @@
 import 'package:ixiamobile_application/Api/Models/price.dart';
-import 'package:ixiamobile_application/Api/Models/product.dart';
 import 'package:ixiamobile_application/Api/Models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,7 +12,8 @@ class Purchase {
   String comments;
   int quantity;
 
-  Purchase({this.user, this.price, this.purchaseTime, this.comments, this.quantity});
+  Purchase(
+      {this.user, this.price, this.purchaseTime, this.comments, this.quantity});
 
   factory Purchase.fromJson(Map<String, dynamic> json) =>
       _$PurchaseFromJson(json);

@@ -1,4 +1,3 @@
-import 'package:ixiamobile_application/Api/Models/category.dart';
 import 'package:ixiamobile_application/Api/Models/sub-category.dart';
 import 'package:json_annotation/json_annotation.dart';
 

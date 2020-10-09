@@ -94,7 +94,7 @@ class EntryPageState extends State<EntryPage> {
       case FacebookLoginStatus.loggedIn:
         final token = result.accessToken.token;
         final graphResponse = await Http.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
+            'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=$token');
         final profile = JSON.jsonDecode(graphResponse.body);
         setState(() {
           userProfile = profile;

@@ -26,7 +26,7 @@ class ProductDetailsState extends State<ProductDetails> {
   Future<List<Price>> priceFuture;
   PriceApi _priceApi = PriceApi();
   String comments;
-  int quantity;
+  int quantity = 0;
   List<Placemark> placemarkCompany;
   String companyAdress;
   Position currentLocation;
@@ -608,7 +608,7 @@ class ProductDetailsState extends State<ProductDetails> {
                   ? new FlatButton(
                       child: new Text('Add Order'),
                       onPressed: () async {
-                        if (quantity < 1 || quantity == null) {
+                        if (quantity < 1) {
                           _showErrorDialog();
                         } else {
                           try {
